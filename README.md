@@ -32,7 +32,16 @@ Create a production build with:
 pnpm build
 ```
 
-## Firebase Hosting
+## GitHub Pages
+
+The workflow in `.github/workflows/deploy-pages.yml` builds and publishes the `main` branch to:
+
+<https://hejinghan777.github.io/paris-program/>
+
+The Pages build uses the `/paris-program/` asset base and hash-based client routing so Home, Trip
+Guide and Restaurants continue to work when the page is refreshed.
+
+## Optional Firebase Hosting
 
 `firebase.json` deploys the Vite `dist` directory, keeps client-side routes working and gives
 fingerprinted assets a long-lived immutable cache.
