@@ -182,6 +182,21 @@ export default function RecommendationRouteMap({ recommendations }) {
                 <strong>{index + 1}. {point.title}</strong>
                 <br />
                 <span>{point.meta}</span>
+                {point.address && (
+                  <>
+                    <br />
+                    <span>{point.address}</span>
+                  </>
+                )}
+                {point.hoursSummary && (
+                  <>
+                    <br />
+                    <span>
+                      {tr('关门时间：', 'Closing: ', 'Fermeture : ')}
+                      {point.hoursSummary}
+                    </span>
+                  </>
+                )}
               </Popup>
             </Marker>
           ))}

@@ -82,6 +82,30 @@ function attractionSource(attraction, language) {
   }
 }
 
+function localizedValue(value, language) {
+  if (!value || typeof value === 'string') return value
+  return value[language] || value.zh || value.en || ''
+}
+
+function attractionRecommendation(attraction, language) {
+  return {
+    type: 'attraction',
+    id: attraction.id,
+    title: attractionName(attraction, language),
+    meta: attractionMeta(attraction, language),
+    description:
+      language === 'zh' ? attraction.studyValue : attractionDescription(attraction, language),
+    address: attraction.address,
+    hoursSummary: localizedValue(attraction.visitingHours?.summary, language),
+    hoursNote: localizedValue(attraction.visitingHours?.note, language),
+    hoursCertainty: attraction.visitingHours?.certainty,
+    hoursCheckedOn: attraction.visitingHours?.checkedOn,
+    hoursSource: attraction.source,
+    lat: attraction.lat,
+    lng: attraction.lng,
+  }
+}
+
 function containsAny(text, words) {
   return words.some((word) => text.includes(word))
 }
@@ -95,14 +119,61 @@ function uniqueSources(items) {
   })
 }
 
+function extractBudgetPerPerson(text) {
+  const currencyMatch =
+    text.match(/(?:€|eur(?:os?)?|欧元?|欧)\s*(\d{1,3}(?:[.,]\d{1,2})?)/i) ||
+    text.match(/(\d{1,3}(?:[.,]\d{1,2})?)\s*(?:€|eur(?:os?)?|欧元?|欧)/i)
+  const contextMatch = text.match(
+    /(?:预算|人均|每人|budget|per person|par personne|par tête)[^\d]{0,10}(\d{1,3}(?:[.,]\d{1,2})?)/i,
+  )
+  const rawValue = currencyMatch?.[1] || contextMatch?.[1]
+  if (!rawValue) return null
+  const value = Number(rawValue.replace(',', '.'))
+  return Number.isFinite(value) && value > 0 ? Math.round(value) : null
+}
+
+function hasBudgetIntent(text) {
+  return containsAny(text, ['预算', '人均', '每人', 'budget', 'per person', 'par personne', 'par tête'])
+}
+
+function formatRestaurantBudget(restaurant, language) {
+  const range = `€${restaurant.budgetEur.min}–${restaurant.budgetEur.max}`
+  return l(language, `${range}/人（估算）`, `${range} pp (estimate)`, `${range}/pers. (estimation)`)
+}
+
 function pickRestaurants(text) {
   const cuisine = cuisineRules.find((rule) => containsAny(text, rule.words))?.specialty
-  const budget = containsAny(text, ['便宜', '实惠', '预算', 'cheap', 'budget', 'affordable', 'abordable'])
-  return restaurants
-    .filter((restaurant) => !cuisine || restaurant.specialty === cuisine)
-    .filter((restaurant) => !budget || restaurant.price.length <= 2)
+  const budgetPerPerson = extractBudgetPerPerson(text)
+  const wantsAffordable = containsAny(text, [
+    '便宜',
+    '实惠',
+    '省钱',
+    'cheap',
+    'affordable',
+    'abordable',
+    'économique',
+  ])
+  const cuisineMatches = restaurants.filter(
+    (restaurant) => !cuisine || restaurant.specialty === cuisine,
+  )
+  const withinBudget = budgetPerPerson
+    ? cuisineMatches.filter((restaurant) => restaurant.budgetEur.min <= budgetPerPerson)
+    : cuisineMatches
+  const candidates = budgetPerPerson && withinBudget.length ? withinBudget : cuisineMatches
+
+  return candidates
     .sort((first, second) => {
-      if (budget && first.price.length !== second.price.length) return first.price.length - second.price.length
+      if (budgetPerPerson) {
+        const firstFitsFully = first.budgetEur.max <= budgetPerPerson
+        const secondFitsFully = second.budgetEur.max <= budgetPerPerson
+        if (firstFitsFully !== secondFitsFully) return firstFitsFully ? -1 : 1
+        const firstGap = Math.abs(first.budgetEur.max - budgetPerPerson)
+        const secondGap = Math.abs(second.budgetEur.max - budgetPerPerson)
+        if (firstGap !== secondGap) return firstGap - secondGap
+      }
+      if (wantsAffordable && first.budgetEur.min !== second.budgetEur.min) {
+        return first.budgetEur.min - second.budgetEur.min
+      }
       return second.snapshotRating - first.snapshotRating
     })
     .slice(0, 3)
@@ -135,31 +206,46 @@ function rankAttractions(text) {
 }
 
 function restaurantAnswer(text, language) {
+  const budgetPerPerson = extractBudgetPerPerson(text)
+  if (hasBudgetIntent(text) && !budgetPerPerson) {
+    return {
+      text: l(
+        language,
+        '请告诉我一个具体的每人预算金额，例如“每人 30 欧元，推荐中餐厅”。我会按照餐厅的估算人均区间为你筛选。',
+        'Please give me a specific per-person amount, for example “€30 per person, recommend Chinese restaurants.” I will filter the estimated per-person ranges.',
+        'Indiquez un montant précis par personne, par exemple « 30 € par personne, restaurant chinois ». Je filtrerai les fourchettes estimées.',
+      ),
+      recommendations: [],
+      sources: [],
+    }
+  }
+
   const matches = pickRestaurants(text)
   const description = matches
     .map(
       (restaurant, index) =>
-        `${index + 1}. ${restaurant.name}（${restaurant.specialty}，${restaurant.price}，历史评分 ${restaurant.snapshotRating.toFixed(1)}）`,
+        `${index + 1}. ${restaurant.name}（${restaurant.specialty}，${formatRestaurantBudget(restaurant, 'zh')}）`,
     )
     .join('；')
   return {
     text: l(
       language,
-      `根据餐厅资料库，我建议先比较：${description}。你可以点击下方餐厅卡片，在站内地图中查看位置并从当前位置开始步行导航。价格和评分是恢复的数据快照，出发前仍需确认当天营业情况。`,
-      `Based on our restaurant database, compare ${matches.map((item) => item.name).join(', ')}. Open a card below to see it on the map and start an in-app walking route. Prices and ratings are a recovered snapshot, so check today’s opening status before leaving.`,
-      `Selon notre base de restaurants, comparez ${matches.map((item) => item.name).join(', ')}. Ouvrez une fiche pour le voir sur la carte et démarrer un itinéraire à pied. Les prix et notes sont un instantané : vérifiez l’ouverture du jour.`,
+      `${budgetPerPerson ? `按每人约 €${budgetPerPerson} 的预算，` : ''}根据餐厅资料库，我建议先比较：${description}。预算区间是每人估算值，饮品、套餐和菜单变化可能增加实际花费；点击卡片可在站内地图查看位置和步行路线。`,
+      `${budgetPerPerson ? `For a budget of about €${budgetPerPerson} per person, ` : ''}compare ${matches.map((item) => `${item.name} (${formatRestaurantBudget(item, 'en')})`).join(', ')}. These are estimated per-person ranges; drinks, set menus and menu changes may increase the bill. Open a card for the in-app map and walking route.`,
+      `${budgetPerPerson ? `Avec un budget d’environ ${budgetPerPerson} € par personne, ` : ''}comparez ${matches.map((item) => `${item.name} (${formatRestaurantBudget(item, 'fr')})`).join(', ')}. Ce sont des estimations par personne ; boissons, menus et changements de carte peuvent augmenter l’addition. Ouvrez une fiche pour la carte et l’itinéraire intégrés.`,
     ),
     recommendations: matches.map((restaurant) => ({
       type: 'restaurant',
       id: restaurant.id,
       title: restaurant.name,
-      meta: `${restaurant.specialty} · ${restaurant.price}`,
+      meta: `${restaurant.specialty} · ${formatRestaurantBudget(restaurant, language)}`,
       description: l(
         language,
         `收录在小组资料库中的${restaurant.specialty}餐厅，可在站内地图查看位置和步行路线。`,
         restaurant.blurb,
         `Une adresse parisienne de la catégorie ${restaurant.specialty}, avec position et itinéraire à pied sur la carte intégrée.`,
       ),
+      budgetEur: restaurant.budgetEur,
       lat: restaurant.lat,
       lng: restaurant.lng,
     })),
@@ -178,15 +264,9 @@ function itineraryAnswer(text, language) {
         `Three-day study plan: Day 1 focuses on landmarks and architecture at ${attractionName(selections[0], language)} and ${attractionName(selections[1], language)}. Day 2 covers art and history at ${attractionName(selections[2], language)} and ${attractionName(selections[3], language)}. Day 3 explores science or heritage at ${attractionName(selections[4], language)} and ${attractionName(selections[5], language)}. Keep two core visits per day and confirm opening hours on the official sites.`,
         `Parcours de trois jours : jour 1, monuments et architecture à ${attractionName(selections[0], language)} et ${attractionName(selections[1], language)} ; jour 2, art et histoire à ${attractionName(selections[2], language)} et ${attractionName(selections[3], language)} ; jour 3, sciences ou patrimoine à ${attractionName(selections[4], language)} et ${attractionName(selections[5], language)}. Limitez-vous à deux visites principales par jour et vérifiez les horaires officiels.`,
       ),
-      recommendations: selections.map((attraction) => ({
-        type: 'attraction',
-        id: attraction.id,
-        title: attractionName(attraction, language),
-        meta: attractionMeta(attraction, language),
-        description: language === 'zh' ? attraction.studyValue : attractionDescription(attraction, language),
-        lat: attraction.lat,
-        lng: attraction.lng,
-      })),
+      recommendations: selections.map((attraction) =>
+        attractionRecommendation(attraction, language),
+      ),
       sources: uniqueSources(selections.map((attraction) => attractionSource(attraction, language))),
     }
   }
@@ -198,15 +278,9 @@ function itineraryAnswer(text, language) {
       `For one day, choose two core visits: ${attractionName(selections[0], language)} in the morning and ${attractionName(selections[1], language)} in the afternoon. Keep ${attractionName(selections[2], language)} as an optional stop. This leaves time for notes and group discussion.`,
       `Pour une journée, gardez deux visites principales : ${attractionName(selections[0], language)} le matin et ${attractionName(selections[1], language)} l’après-midi. ${attractionName(selections[2], language)} reste une option. Ce rythme laisse du temps pour les notes et les échanges.`,
     ),
-    recommendations: selections.map((attraction) => ({
-      type: 'attraction',
-      id: attraction.id,
-      title: attractionName(attraction, language),
-      meta: attractionMeta(attraction, language),
-      description: language === 'zh' ? attraction.studyValue : attractionDescription(attraction, language),
-      lat: attraction.lat,
-      lng: attraction.lng,
-    })),
+    recommendations: selections.map((attraction) =>
+      attractionRecommendation(attraction, language),
+    ),
     sources: uniqueSources(selections.map((attraction) => attractionSource(attraction, language))),
   }
 }
@@ -222,15 +296,9 @@ function attractionAnswer(text, language) {
       `Based on theme, study value and visit length, start with ${selections.map((item) => attractionName(item, language)).join(', ')}. ${attractionName(selections[0], language)} is the strongest match for your question. Check official visitor information before fixing the order.`,
       `Selon le thème, l’intérêt pédagogique et la durée, commencez par ${selections.map((item) => attractionName(item, language)).join(', ')}. ${attractionName(selections[0], language)} correspond le mieux à votre demande. Vérifiez les informations officielles avant de fixer l’ordre.`,
     ),
-    recommendations: selections.map((attraction) => ({
-      type: 'attraction',
-      id: attraction.id,
-      title: attractionName(attraction, language),
-      meta: attractionMeta(attraction, language),
-      description: attractionDescription(attraction, language),
-      lat: attraction.lat,
-      lng: attraction.lng,
-    })),
+    recommendations: selections.map((attraction) =>
+      attractionRecommendation(attraction, language),
+    ),
     sources: uniqueSources(selections.map((attraction) => attractionSource(attraction, language))),
   }
 }

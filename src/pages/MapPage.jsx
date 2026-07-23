@@ -111,6 +111,10 @@ function RestaurantCard({ restaurant, selected, distance, onSelect }) {
           </span>
           <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-paris-ink/55">
             <span>{specialtyLabels[language][restaurant.specialty]}</span>
+            <span className="font-semibold text-paris-blue">
+              €{restaurant.budgetEur.min}–{restaurant.budgetEur.max}
+              {language === 'zh' ? '/人' : language === 'fr' ? '/pers.' : ' pp'}
+            </span>
             <span className="inline-flex items-center gap-1">
               <Star size={11} className="fill-paris-gold text-paris-gold" aria-hidden="true" />
               {restaurant.snapshotRating.toFixed(1)}
@@ -162,6 +166,10 @@ function SelectedRestaurant({
             <Star size={12} className="fill-paris-gold" aria-hidden="true" />
             {tr('历史评分', 'Snapshot rating', 'Note historique')} {restaurant.snapshotRating.toFixed(1)}
           </span>
+          <span className="rounded-full bg-paris-blue/8 px-2.5 py-1 font-semibold text-paris-blue">
+            {tr('估算人均', 'Estimated per person', 'Estimation par personne')} €{restaurant.budgetEur.min}–
+            {restaurant.budgetEur.max}
+          </span>
           {userLocation && (
             <span className="rounded-full bg-paris-blue/8 px-2.5 py-1 font-semibold text-paris-blue">
               {tr('距你', 'From you', 'Depuis vous')} {formatDistance(distanceBetween(userLocation, restaurant), language)}
@@ -173,9 +181,9 @@ function SelectedRestaurant({
         </p>
         <p className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-[11px] leading-5 text-amber-800">
           {tr(
-            `价格与评分来自 ${restaurantDataset.recoveredOn} 恢复的数据快照，并非实时营业信息。`,
-            `Prices and ratings are a recovered snapshot from ${restaurantDataset.recoveredOn}, not live business information.`,
-            `Les prix et notes proviennent d’un instantané du ${restaurantDataset.recoveredOn}, et non de données en temps réel.`,
+            `人均预算是 ${restaurantDataset.budgetReviewedOn} 核对的估算区间；饮品、套餐和菜单变化可能增加实际花费。评分为历史快照，并非实时营业信息。`,
+            `The per-person budget is an estimate reviewed on ${restaurantDataset.budgetReviewedOn}; drinks, set menus and menu changes may increase the bill. Ratings are a historical snapshot, not live business information.`,
+            `Le budget par personne est une estimation vérifiée le ${restaurantDataset.budgetReviewedOn} ; boissons, menus et changements de carte peuvent augmenter l’addition. Les notes sont historiques, pas en temps réel.`,
           )}
         </p>
       </div>
@@ -322,7 +330,7 @@ export default function MapPage() {
 
     return [...nextRestaurants].sort((first, second) => {
       if (sortBy === 'rating') return second.snapshotRating - first.snapshotRating
-      if (sortBy === 'price') return first.price.length - second.price.length
+      if (sortBy === 'price') return first.budgetEur.min - second.budgetEur.min
       if (sortBy === 'distance' && userLocation) {
         return distanceBetween(userLocation, first) - distanceBetween(userLocation, second)
       }
@@ -604,9 +612,9 @@ export default function MapPage() {
               <div className="flex items-center gap-2 border-t border-paris-navy/8 bg-white px-4 py-2 text-[10px] leading-4 text-paris-ink/45">
                 <Database size={13} className="shrink-0" aria-hidden="true" />
                 {tr(
-                  '餐厅评分与价格为恢复的数据快照，不代表实时状态',
-                  'Ratings and prices are a recovered snapshot, not live data',
-                  'Les notes et prix sont un instantané, pas des données en temps réel',
+                  '预算为每人估算区间，评分为历史快照，不代表实时状态',
+                  'Budgets are per-person estimates; ratings are a historical snapshot',
+                  'Budgets estimés par personne ; notes issues d’un instantané historique',
                 )}
               </div>
             </>

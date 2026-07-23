@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   ArrowRight,
   Bot,
+  Clock3,
   Database,
   ExternalLink,
   LoaderCircle,
@@ -18,6 +19,7 @@ import { useLanguage } from '../i18n'
 import { askGuide, hasRemoteGuide } from '../services/guideApi'
 
 function RecommendationCard({ recommendation }) {
+  const { tr } = useLanguage()
   const content = (
     <>
       <span className="flex items-center justify-between gap-2">
@@ -28,6 +30,42 @@ function RecommendationCard({ recommendation }) {
       <span className="mt-1.5 line-clamp-2 block text-xs leading-5 text-paris-ink/55">
         {recommendation.description}
       </span>
+      {recommendation.address && (
+        <span className="mt-2 flex items-start gap-1.5 text-[11px] leading-4 text-paris-ink/60">
+          <MapPin size={12} className="mt-0.5 shrink-0 text-paris-blue" aria-hidden="true" />
+          {recommendation.address}
+        </span>
+      )}
+      {recommendation.hoursSummary && (
+        <span className="mt-1.5 flex items-start gap-1.5 text-[11px] leading-4 text-paris-ink/70">
+          <Clock3 size={12} className="mt-0.5 shrink-0 text-paris-blue" aria-hidden="true" />
+          <span>
+            <span className="font-semibold">{recommendation.hoursSummary}</span>
+            <span
+              className={`ml-1.5 inline-flex rounded-full px-1.5 py-0.5 text-[9px] font-bold ${
+                recommendation.hoursCertainty === 'confirmed'
+                  ? 'bg-emerald-50 text-emerald-700'
+                  : 'bg-amber-50 text-amber-700'
+              }`}
+            >
+              {recommendation.hoursCertainty === 'confirmed'
+                ? tr('官方常规时间', 'Official regular hours', 'Horaires officiels')
+                : tr('时间可能变化', 'Hours may vary', 'Horaires variables')}
+            </span>
+          </span>
+        </span>
+      )}
+      {recommendation.hoursNote && (
+        <span className="mt-1 block text-[10px] leading-4 text-paris-ink/45">
+          {recommendation.hoursNote}
+          {recommendation.hoursCheckedOn &&
+            tr(
+              ` · 核对日期 ${recommendation.hoursCheckedOn}`,
+              ` · Checked ${recommendation.hoursCheckedOn}`,
+              ` · Vérifié le ${recommendation.hoursCheckedOn}`,
+            )}
+        </span>
+      )}
     </>
   )
 
@@ -147,9 +185,9 @@ export default function ChatPage() {
       'Recommander des lieux scientifiques',
     ),
     tr(
-      '推荐价格实惠的中餐厅',
-      'Recommend affordable Chinese restaurants',
-      'Recommander des restaurants chinois abordables',
+      '每人预算 30 欧，推荐餐厅',
+      'Recommend restaurants for €30 per person',
+      'Recommander des restaurants à 30 € par personne',
     ),
     tr(
       '下雨天适合参观哪里？',
@@ -332,9 +370,9 @@ export default function ChatPage() {
                   }
                 }}
                 placeholder={tr(
-                  '例如：推荐适合研学的一日艺术路线',
-                  'Example: suggest a one-day art study route',
-                  'Exemple : proposer un parcours artistique d’une journée',
+                  '例如：每人预算 30 欧，推荐中餐厅',
+                  'Example: recommend Chinese restaurants for €30 per person',
+                  'Exemple : restaurants chinois à 30 € par personne',
                 )}
                 className="max-h-28 min-h-[44px] min-w-0 flex-1 resize-none rounded-2xl border border-paris-navy/10 bg-paris-cream/55 px-4 py-3 text-sm outline-none transition placeholder:text-paris-ink/35 focus:border-paris-blue focus:ring-2 focus:ring-paris-blue/10"
                 disabled={isReplying}

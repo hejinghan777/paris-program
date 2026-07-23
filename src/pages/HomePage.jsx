@@ -1,9 +1,57 @@
-import { ArrowRight, Bot, Database, LocateFixed, MapPinned, Sparkles, Utensils } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import {
+  ArrowRight,
+  Bot,
+  Cloud,
+  CloudFog,
+  CloudLightning,
+  CloudRain,
+  CloudSun,
+  Droplets,
+  LoaderCircle,
+  MapPinned,
+  RefreshCw,
+  Snowflake,
+  Sparkles,
+  Sun,
+  Thermometer,
+  Wind,
+} from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../i18n'
+import { fetchParisWeather, getWeatherPresentation } from '../services/weather'
+
+function WeatherIcon({ kind, ...props }) {
+  if (kind === 'clear') return <Sun {...props} />
+  if (kind === 'partlyCloudy') return <CloudSun {...props} />
+  if (kind === 'fog') return <CloudFog {...props} />
+  if (kind === 'rain' || kind === 'drizzle' || kind === 'showers') return <CloudRain {...props} />
+  if (kind === 'snow') return <Snowflake {...props} />
+  if (kind === 'thunderstorm') return <CloudLightning {...props} />
+  return <Cloud {...props} />
+}
 
 export default function HomePage() {
-  const { tr } = useLanguage()
+  const { language, tr } = useLanguage()
+  const [weather, setWeather] = useState(null)
+  const [weatherStatus, setWeatherStatus] = useState('loading')
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    setWeatherStatus('loading')
+    fetchParisWeather(controller.signal)
+      .then((nextWeather) => {
+        setWeather(nextWeather)
+        setWeatherStatus('ready')
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError') setWeatherStatus('error')
+      })
+    return () => controller.abort()
+  }, [refreshKey])
+
+  const weatherPresentation = getWeatherPresentation(weather?.weatherCode, language)
 
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden">
@@ -75,47 +123,82 @@ export default function HomePage() {
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
                     {tr('今日巴黎', 'Today in Paris', 'Aujourd’hui à Paris')}
                   </p>
-                  <h2 className="mt-2 text-2xl font-bold">
-                    {tr('从当前位置出发', 'Start from your location', 'Partez de votre position')}
-                  </h2>
-                  <p className="mt-2 text-sm leading-6 text-white/60">
-                    {tr(
-                      '选择地点后，路线和餐厅信息会直接显示在网站内。',
-                      'Choose a place to see its details and route without leaving the site.',
-                      'Choisissez un lieu pour afficher les détails et l’itinéraire sans quitter le site.',
-                    )}
-                  </p>
+                  {weather ? (
+                    <>
+                      <div className="mt-2 flex items-end gap-3">
+                        <h2 className="text-5xl font-black tracking-tight">{weather.temperature}°</h2>
+                        <p className="pb-1 text-lg font-bold">{weatherPresentation.label}</p>
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-white/60">
+                        {tr(
+                          `体感 ${weather.apparentTemperature}° · 今日 ${weather.minimumTemperature}° 至 ${weather.maximumTemperature}°`,
+                          `Feels like ${weather.apparentTemperature}° · ${weather.minimumTemperature}° to ${weather.maximumTemperature}° today`,
+                          `Ressenti ${weather.apparentTemperature}° · de ${weather.minimumTemperature}° à ${weather.maximumTemperature}° aujourd’hui`,
+                        )}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="mt-2 text-2xl font-bold">
+                        {weatherStatus === 'error'
+                          ? tr('天气信息暂不可用', 'Weather unavailable', 'Météo indisponible')
+                          : tr('正在获取巴黎天气', 'Loading Paris weather', 'Chargement de la météo')}
+                      </h2>
+                      <p className="mt-2 text-sm leading-6 text-white/60">
+                        {weatherStatus === 'error'
+                          ? tr(
+                              '天气服务暂时未响应，可稍后重新加载。',
+                              'The weather service did not respond. Try again shortly.',
+                              'Le service météo ne répond pas. Réessayez dans un instant.',
+                            )
+                          : tr(
+                              '正在读取巴黎今天的最新预报…',
+                              'Fetching today’s latest Paris forecast…',
+                              'Récupération des dernières prévisions pour Paris…',
+                            )}
+                      </p>
+                    </>
+                  )}
                 </div>
-                <div className="rounded-2xl bg-paris-red p-3 shadow-lg">
-                  <LocateFixed size={24} aria-hidden="true" />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setRefreshKey((key) => key + 1)}
+                  disabled={weatherStatus === 'loading'}
+                  className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-paris-red shadow-lg transition hover:scale-105 disabled:cursor-wait"
+                  aria-label={tr('刷新天气', 'Refresh weather', 'Actualiser la météo')}
+                >
+                  {weatherStatus === 'loading' ? (
+                    <LoaderCircle size={24} className="animate-spin" aria-hidden="true" />
+                  ) : weatherStatus === 'error' ? (
+                    <RefreshCw size={22} aria-hidden="true" />
+                  ) : (
+                    <WeatherIcon kind={weatherPresentation.kind} size={25} aria-hidden="true" />
+                  )}
+                </button>
               </div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
                 {[
                   {
-                    icon: Utensils,
-                    title: tr('餐厅资料库', 'Restaurant database', 'Base de restaurants'),
-                    text: tr(
-                      '按菜系、价格和距离筛选',
-                      'Filter by cuisine, price and distance',
-                      'Filtres par cuisine, prix et distance',
-                    ),
+                    icon: Thermometer,
+                    title: tr('最高 / 最低', 'High / low', 'Max / min'),
+                    text: weather ? `${weather.maximumTemperature}° / ${weather.minimumTemperature}°` : '—',
                   },
                   {
-                    icon: Database,
-                    title: tr('可信地点资料', 'Trusted place data', 'Données fiables'),
-                    text: tr(
-                      '推荐附带官方信息来源',
-                      'Recommendations include official sources',
-                      'Recommandations avec sources officielles',
-                    ),
+                    icon: Droplets,
+                    title: tr('降雨概率', 'Chance of rain', 'Risque de pluie'),
+                    text: weather ? `${weather.precipitationProbability}%` : '—',
+                  },
+                  {
+                    icon: Wind,
+                    title: tr('当前风速', 'Current wind', 'Vent actuel'),
+                    text: weather ? `${weather.windSpeed} km/h` : '—',
                   },
                 ].map(({ icon: Icon, title, text }) => (
-                  <div key={title} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div key={title} className="rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
                     <Icon size={19} className="text-[#8db7ff]" aria-hidden="true" />
-                    <p className="mt-3 text-sm font-bold">{title}</p>
-                    <p className="mt-1 text-xs leading-5 text-white/55">{text}</p>
+                    <p className="mt-3 text-[10px] font-semibold text-white/45 sm:text-xs">{title}</p>
+                    <p className="mt-1 text-sm font-black leading-5 text-white sm:text-base">{text}</p>
                   </div>
                 ))}
               </div>
@@ -125,17 +208,33 @@ export default function HomePage() {
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-[0_0_0_5px_rgba(16,185,129,0.12)]" />
               <div>
                 <p className="text-sm font-bold text-paris-navy">
-                  {tr('核心功能已可用', 'Core features are ready', 'Fonctions principales disponibles')}
+                  {weatherStatus === 'ready'
+                    ? tr('巴黎天气预报已更新', 'Paris forecast updated', 'Prévisions de Paris actualisées')
+                    : tr('巴黎天气预报', 'Paris weather forecast', 'Prévisions météo de Paris')}
                 </p>
                 <p className="text-xs text-paris-ink/50">
-                  {tr(
-                    '定位、路线、餐厅和数据库推荐',
-                    'Location, routes, restaurants and database picks',
-                    'Position, itinéraires, restaurants et recommandations',
+                  {weather
+                    ? tr(
+                        `当地时间 ${weather.observedAt.slice(11, 16)} · 天气数据 `,
+                        `Local time ${weather.observedAt.slice(11, 16)} · Weather data `,
+                        `Heure locale ${weather.observedAt.slice(11, 16)} · Données météo `,
+                      )
+                    : tr('等待天气数据', 'Waiting for weather data', 'En attente des données météo')}
+                  {weather && (
+                    <a
+                      href="https://open-meteo.com/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-semibold text-paris-blue hover:underline"
+                    >
+                      Open-Meteo
+                    </a>
                   )}
                 </p>
               </div>
-              <span className="text-xs font-semibold text-emerald-700">Ready</span>
+              <span className="text-xs font-semibold text-emerald-700">
+                {weatherStatus === 'ready' ? tr('已更新', 'Updated', 'Actualisé') : '—'}
+              </span>
             </div>
           </div>
         </div>

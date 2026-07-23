@@ -14,9 +14,24 @@ export const attractions = [
     tags: ['埃菲尔', '铁塔', 'eiffel', '建筑', '地标', '夜景'],
     summary: '从工业革命、钢结构工程和世界博览会角度理解巴黎最具代表性的城市地标。',
     studyValue: '适合建筑、工程、城市形象与世界博览会主题研学。',
+    address: '5 avenue Anatole France, 75007 Paris',
+    visitingHours: {
+      summary: {
+        zh: '当前官方日历显示 00:00 关闭',
+        en: 'Current official calendar: closes at 12:00 AM',
+        fr: 'Calendrier officiel actuel : fermeture à 00h00',
+      },
+      note: {
+        zh: '时间会随日期、天气和顶部开放情况变化，请按参观日期重新确认。',
+        en: 'Hours vary by date, weather and summit access; recheck your visit date.',
+        fr: 'Les horaires varient selon la date, la météo et l’accès au sommet ; revérifiez avant la visite.',
+      },
+      certainty: 'variable',
+      checkedOn: '2026-07-23',
+    },
     source: {
       label: '埃菲尔铁塔官方网站',
-      url: 'https://www.toureiffel.paris/en',
+      url: 'https://www.toureiffel.paris/en/rates-opening-times',
     },
   },
   {
@@ -32,9 +47,24 @@ export const attractions = [
     tags: ['卢浮宫', 'louvre', '艺术', '历史', '博物馆', '室内', '下雨'],
     summary: '围绕古代文明、欧洲艺术史和博物馆建筑变迁选择重点展厅参观。',
     studyValue: '适合艺术史、文明史、策展与文化遗产主题研学。',
+    address: 'Cour Napoléon / Rue de Rivoli, 75001 Paris',
+    visitingHours: {
+      summary: {
+        zh: '通常 18:00 关闭；周三、周五 21:00',
+        en: 'Usually closes at 6:00 PM; Wed and Fri at 9:00 PM',
+        fr: 'Fermeture habituelle à 18h ; mercredi et vendredi à 21h',
+      },
+      note: {
+        zh: '周二闭馆；最后入场为闭馆前 1 小时，展厅提前 30 分钟清场。',
+        en: 'Closed Tuesday; last entry is 1 hour before closing and galleries clear 30 minutes before.',
+        fr: 'Fermé le mardi ; dernière entrée 1 h avant et évacuation des salles 30 min avant.',
+      },
+      certainty: 'confirmed',
+      checkedOn: '2026-07-23',
+    },
     source: {
       label: '卢浮宫官方网站',
-      url: 'https://www.louvre.fr/en',
+      url: 'https://www.louvre.fr/en/visit/hours-admission',
     },
   },
   {
@@ -50,9 +80,24 @@ export const attractions = [
     tags: ['奥赛', 'orsay', '印象派', '艺术', '博物馆', '室内', '下雨'],
     summary: '在改造后的火车站建筑中集中了解十九世纪艺术与印象派发展。',
     studyValue: '适合现代艺术史、工业建筑再利用和城市更新主题。',
+    address: "Esplanade Valéry Giscard d'Estaing, 75007 Paris",
+    visitingHours: {
+      summary: {
+        zh: '通常 18:00 关闭；周四 21:45',
+        en: 'Usually closes at 6:00 PM; Thursday at 9:45 PM',
+        fr: 'Fermeture habituelle à 18h ; jeudi à 21h45',
+      },
+      note: {
+        zh: '周一闭馆；通常最后入场 17:00，周四夜场最后入场 21:00，特殊日期可能调整。',
+        en: 'Closed Monday; last entry is normally 5:00 PM and 9:00 PM on Thursday; exceptions may apply.',
+        fr: 'Fermé le lundi ; dernière entrée à 17h, ou 21h le jeudi ; exceptions possibles.',
+      },
+      certainty: 'variable',
+      checkedOn: '2026-07-23',
+    },
     source: {
       label: '奥赛博物馆官方网站',
-      url: 'https://www.musee-orsay.fr/en',
+      url: 'https://www.musee-orsay.fr/en/visit',
     },
   },
   {
@@ -68,9 +113,24 @@ export const attractions = [
     tags: ['科学', '科技', '工业', 'science', '研学', '互动', '室内', '下雨'],
     summary: '通过互动展览接触科学、技术、工业与社会议题，适合团队任务式学习。',
     studyValue: '适合科学传播、工程技术、可持续发展和创新主题。',
+    address: '30 avenue Corentin-Cariou, 75019 Paris',
+    visitingHours: {
+      summary: {
+        zh: '通常周二至周六 18:00、周日 19:00；暑期可延长至 19:00',
+        en: 'Usually 6:00 PM Tue–Sat and 7:00 PM Sun; summer hours may run to 7:00 PM',
+        fr: 'Habituellement 18h du mardi au samedi et 19h le dimanche ; jusqu’à 19h en été',
+      },
+      note: {
+        zh: '周一闭馆；各展区可能采用不同时间，因此具体关门时间不是完全固定。',
+        en: 'Closed Monday; individual areas may keep different hours, so the exact closing time can vary.',
+        fr: 'Fermé le lundi ; certains espaces ont des horaires propres, donc l’heure exacte peut varier.',
+      },
+      certainty: 'variable',
+      checkedOn: '2026-07-23',
+    },
     source: {
       label: '科学与工业城官方网站',
-      url: 'https://www.cite-sciences.fr/en/home',
+      url: 'https://www.cite-sciences.fr/en/visit-us/opening-hours',
     },
   },
   {
@@ -86,9 +146,24 @@ export const attractions = [
     tags: ['自然', '生物', '进化', '历史', '博物馆', '室内', '下雨'],
     summary: '结合进化、生物多样性与自然保护展览开展自然科学观察。',
     studyValue: '适合生物学、生态保护、科学史与博物馆教育主题。',
+    address: '36 rue Geoffroy Saint-Hilaire, 75005 Paris',
+    visitingHours: {
+      summary: {
+        zh: '18:00 关闭',
+        en: 'Closes at 6:00 PM',
+        fr: 'Fermeture à 18h',
+      },
+      note: {
+        zh: '周二闭馆；最后入场时间为 17:00。',
+        en: 'Closed Tuesday; last entry is at 5:00 PM.',
+        fr: 'Fermé le mardi ; dernière entrée à 17h.',
+      },
+      certainty: 'confirmed',
+      checkedOn: '2026-07-23',
+    },
     source: {
       label: '法国国家自然历史博物馆官方网站',
-      url: 'https://www.mnhn.fr/en',
+      url: 'https://www.mnhn.fr/en/grande-galerie-de-l-evolution-gallery-of-evolution',
     },
   },
   {
@@ -104,9 +179,24 @@ export const attractions = [
     tags: ['凯旋门', 'arc', '拿破仑', '历史', '建筑', '城市规划'],
     summary: '从纪念性建筑、国家记忆和香榭丽舍轴线观察巴黎的城市规划。',
     studyValue: '适合欧洲史、纪念性建筑与城市空间主题。',
+    address: 'Place Charles de Gaulle, 75008 Paris',
+    visitingHours: {
+      summary: {
+        zh: '4–9 月 23:00；10–3 月 22:30',
+        en: '11:00 PM Apr–Sep; 10:30 PM Oct–Mar',
+        fr: '23h d’avril à septembre ; 22h30 d’octobre à mars',
+      },
+      note: {
+        zh: '最后入场为闭馆前 45 分钟；仪式、天气和特别活动可能临时改变时间。',
+        en: 'Last entry is 45 minutes before closing; ceremonies, weather and events can change hours.',
+        fr: 'Dernière entrée 45 min avant ; cérémonies, météo et événements peuvent modifier les horaires.',
+      },
+      certainty: 'variable',
+      checkedOn: '2026-07-23',
+    },
     source: {
       label: '法国国家古迹中心：凯旋门',
-      url: 'https://www.paris-arc-de-triomphe.fr/en',
+      url: 'https://www.paris-arc-de-triomphe.fr/en/visite/informations-pratiques',
     },
   },
   {
@@ -122,9 +212,24 @@ export const attractions = [
     tags: ['圣母院', 'notre dame', '哥特', '建筑', '历史', '修复'],
     summary: '观察哥特式建筑、塞纳河城市发展，以及火灾后文化遗产修复工作。',
     studyValue: '适合建筑史、文化遗产保护和修复工程主题。',
+    address: '6 Parvis Notre-Dame, Place Jean-Paul II, 75004 Paris',
+    visitingHours: {
+      summary: {
+        zh: '工作日通常 19:00；周四 22:00；周末 19:30',
+        en: 'Usually 7:00 PM weekdays; 10:00 PM Thu; 7:30 PM weekends',
+        fr: 'Habituellement 19h en semaine ; 22h le jeudi ; 19h30 le week-end',
+      },
+      note: {
+        zh: '最后入场为闭馆前 30 分钟；宗教庆典或特殊活动期间可能调整。',
+        en: 'Last entry is 30 minutes before closing; services and special events may alter hours.',
+        fr: 'Dernière entrée 30 min avant ; offices et événements spéciaux peuvent modifier les horaires.',
+      },
+      certainty: 'variable',
+      checkedOn: '2026-07-23',
+    },
     source: {
       label: '巴黎圣母院官方网站',
-      url: 'https://www.notredamedeparis.fr/en/',
+      url: 'https://www.notredamedeparis.fr/en/faq/opening-hours/',
     },
   },
   {
@@ -140,9 +245,24 @@ export const attractions = [
     tags: ['凡尔赛', 'versailles', '法国历史', '宫殿', '园林', '路易十四'],
     summary: '通过宫殿、园林和王室空间理解法国君主制、艺术和政治表达。',
     studyValue: '适合法国史、欧洲政治史、宫廷艺术和景观设计主题。',
+    address: 'Place d’Armes, 78000 Versailles',
+    visitingHours: {
+      summary: {
+        zh: '宫殿旺季 18:30；淡季 17:30',
+        en: 'Palace: 6:30 PM in high season; 5:30 PM in low season',
+        fr: 'Château : 18h30 en haute saison ; 17h30 en basse saison',
+      },
+      note: {
+        zh: '周一闭馆；旺季最后入场 17:45、淡季 16:45，花园和其他区域时间不同。',
+        en: 'Closed Monday; last entry is 5:45 PM in high season and 4:45 PM in low season; gardens differ.',
+        fr: 'Fermé le lundi ; dernière entrée à 17h45 en haute saison et 16h45 en basse saison ; jardins différents.',
+      },
+      certainty: 'variable',
+      checkedOn: '2026-07-23',
+    },
     source: {
       label: '凡尔赛宫官方网站',
-      url: 'https://en.chateauversailles.fr/',
+      url: 'https://en.chateauversailles.fr/plan-your-visit/practical-information',
     },
   },
 ]
