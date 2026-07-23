@@ -19,8 +19,9 @@ import {
 import { useSearchParams } from 'react-router-dom'
 import GoogleRestaurantMap from '../components/maps/GoogleRestaurantMap'
 import LeafletRestaurantMap from '../components/maps/LeafletRestaurantMap'
-import { restaurantDataset, restaurants, specialties } from '../data/restaurants'
+import { restaurantDataset, specialties } from '../data/restaurants'
 import { useLanguage } from '../i18n'
+import { useManagedContent } from '../managedContent'
 import {
   distanceBetween,
   fetchWalkingRoute,
@@ -80,6 +81,12 @@ function restaurantDescription(restaurant, language) {
     return `Une adresse parisienne de catégorie « ${specialtyLabels.fr[restaurant.specialty]} », enregistrée dans la base du groupe pour comparer la cuisine, le prix et la position.`
   }
   return `这是一家收录在小组餐厅资料库中的${specialtyLabels.zh[restaurant.specialty]}，可结合价格、历史评分和当前位置进行比较。`
+}
+
+function localizedValue(value, language) {
+  if (!value) return ''
+  if (typeof value === 'string') return value
+  return value[language] || value.zh || value.en || value.fr || ''
 }
 
 function RestaurantCard({ restaurant, selected, distance, onSelect }) {
@@ -179,6 +186,39 @@ function SelectedRestaurant({
         <p className="mt-4 text-sm leading-6 text-paris-ink/65">
           {restaurantDescription(restaurant, language)}
         </p>
+        {restaurant.openingHours && (
+          <div className="mt-3 rounded-xl border border-paris-navy/8 bg-paris-cream/60 px-3 py-2.5">
+            <p className="flex items-start gap-2 text-xs font-bold text-paris-navy">
+              <Clock3 size={14} className="mt-0.5 shrink-0 text-paris-blue" aria-hidden="true" />
+              <span>
+                {localizedValue(restaurant.openingHours.summary, language) ||
+                  tr('关门时间尚未确认', 'Closing time not confirmed', 'Heure de fermeture non confirmée')}
+                <span
+                  className={`ml-2 inline-flex rounded-full px-1.5 py-0.5 text-[9px] ${
+                    restaurant.openingHours.certainty === 'confirmed'
+                      ? 'bg-emerald-50 text-emerald-700'
+                      : 'bg-amber-50 text-amber-700'
+                  }`}
+                >
+                  {restaurant.openingHours.certainty === 'confirmed'
+                    ? tr('已确认', 'Confirmed', 'Confirmé')
+                    : tr('可能变化', 'May vary', 'Variable')}
+                </span>
+              </span>
+            </p>
+            {localizedValue(restaurant.openingHours.note, language) && (
+              <p className="mt-1.5 text-[10px] leading-4 text-paris-ink/50">
+                {localizedValue(restaurant.openingHours.note, language)}
+                {restaurant.openingHours.checkedOn &&
+                  tr(
+                    ` · 核对日期 ${restaurant.openingHours.checkedOn}`,
+                    ` · Checked ${restaurant.openingHours.checkedOn}`,
+                    ` · Vérifié le ${restaurant.openingHours.checkedOn}`,
+                  )}
+              </p>
+            )}
+          </div>
+        )}
         <p className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-[11px] leading-5 text-amber-800">
           {tr(
             `人均预算是 ${restaurantDataset.budgetReviewedOn} 核对的估算区间；饮品、套餐和菜单变化可能增加实际花费。评分为历史快照，并非实时营业信息。`,
@@ -279,6 +319,7 @@ function SelectedRestaurant({
 
 export default function MapPage() {
   const { language, tr } = useLanguage()
+  const { restaurants } = useManagedContent()
   const [searchParams] = useSearchParams()
   const [query, setQuery] = useState('')
   const [activeSpecialty, setActiveSpecialty] = useState('All')
@@ -311,6 +352,12 @@ export default function MapPage() {
     }
   }, [handleSelect, searchParams])
 
+  useEffect(() => {
+    if (!selected) return
+    const current = restaurants.find((restaurant) => restaurant.id === selected.id)
+    if (current && current !== selected) setSelected(current)
+  }, [restaurants, selected])
+
   useEffect(
     () => () => {
       if (watchIdRef.current !== null) navigator.geolocation.clearWatch(watchIdRef.current)
@@ -336,7 +383,7 @@ export default function MapPage() {
       }
       return first.id - second.id
     })
-  }, [activeSpecialty, language, query, sortBy, userLocation])
+  }, [activeSpecialty, language, query, restaurants, sortBy, userLocation])
 
   const startLocationWatch = useCallback(() => {
     if (!navigator.geolocation || watchIdRef.current !== null) return

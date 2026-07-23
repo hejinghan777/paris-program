@@ -31,15 +31,15 @@ function weatherFallback(weather, language) {
   return `巴黎当前${condition}，${weather.temperature}°C，体感 ${weather.apparentTemperature}°C。今天预计 ${weather.minimumTemperature}–${weather.maximumTemperature}°C，最高降水概率 ${weather.precipitationProbability}%，风速约 ${weather.windSpeed} km/h。`
 }
 
-export async function askGuide(message, language = 'zh', history = []) {
-  const localAnswer = getLocalGuideAnswer(message, language)
+export async function askGuide(message, language = 'zh', history = [], managedData = {}) {
+  const localAnswer = getLocalGuideAnswer(message, language, managedData)
   if (!guideApiUrl) return localAnswer
 
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), 20000)
 
   try {
-    const context = buildGuideContext(message)
+    const context = buildGuideContext(message, managedData)
     let liveWeather = null
     if (context.intent.weatherRequested) {
       try {
@@ -87,7 +87,7 @@ export async function askGuide(message, language = 'zh', history = []) {
         : localAnswer.sources,
     }
   } catch {
-    const context = buildGuideContext(message)
+    const context = buildGuideContext(message, managedData)
     if (context.intent.weatherRequested) {
       try {
         const weather = await fetchParisWeather()

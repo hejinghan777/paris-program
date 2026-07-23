@@ -347,7 +347,7 @@ function formatRestaurantBudget(restaurant, language) {
   return l(language, `${range}/人（估算）`, `${range} pp (estimate)`, `${range}/pers. (estimation)`)
 }
 
-function pickRestaurants(text) {
+function pickRestaurants(text, restaurantData = restaurants) {
   const cuisine = cuisineRules.find((rule) => containsAny(text, rule.words))?.specialty
   const budgetPerPerson = extractBudgetPerPerson(text)
   const wantsAffordable = containsAny(text, [
@@ -359,7 +359,7 @@ function pickRestaurants(text) {
     'abordable',
     'économique',
   ])
-  const cuisineMatches = restaurants.filter(
+  const cuisineMatches = restaurantData.filter(
     (restaurant) => !cuisine || restaurant.specialty === cuisine,
   )
   const withinBudget = budgetPerPerson
@@ -385,13 +385,13 @@ function pickRestaurants(text) {
     .slice(0, 3)
 }
 
-function rankAttractions(text) {
+function rankAttractions(text, attractionData = attractions) {
   const wantsFree = containsAny(text, ['免费', '省钱', 'free', 'gratuit'])
   const rainy = containsAny(text, ['下雨', '雨天', '室内', 'rain', 'pluie', 'intérieur'])
   const science = containsAny(text, ['科学', '科技', 'science', 'scientific', 'scientifique'])
   const art = containsAny(text, ['艺术', '美术', 'art', 'artistique'])
   const history = containsAny(text, ['历史', 'history', 'histoire'])
-  return attractions
+  return attractionData
     .map((attraction) => {
       const score = attraction.tags.reduce(
         (total, tag) => total + (text.includes(tag.toLowerCase()) ? 3 : 0),
@@ -411,7 +411,7 @@ function rankAttractions(text) {
     .sort((first, second) => second.score - first.score)
 }
 
-function restaurantAnswer(text, language) {
+function restaurantAnswer(text, language, restaurantData = restaurants) {
   const budgetPerPerson = extractBudgetPerPerson(text)
   const mentionsSpecificTime = containsAny(text, [
     '今天',
@@ -440,7 +440,7 @@ function restaurantAnswer(text, language) {
     }
   }
 
-  const matches = pickRestaurants(text)
+  const matches = pickRestaurants(text, restaurantData)
   const hasFullBudgetMatch =
     !budgetPerPerson || matches.some((restaurant) => restaurant.budgetEur.max <= budgetPerPerson)
   const strictBudgetNote =
@@ -477,6 +477,10 @@ function restaurantAnswer(text, language) {
         `Une adresse parisienne de la catégorie ${specialtyName(restaurant.specialty, 'fr')}, avec position et itinéraire à pied sur la carte intégrée.`,
       ),
       budgetEur: restaurant.budgetEur,
+      hoursSummary: localizedValue(restaurant.openingHours?.summary, language),
+      hoursNote: localizedValue(restaurant.openingHours?.note, language),
+      hoursCertainty: restaurant.openingHours?.certainty,
+      hoursCheckedOn: restaurant.openingHours?.checkedOn,
       lat: restaurant.lat,
       lng: restaurant.lng,
     })),
@@ -484,9 +488,9 @@ function restaurantAnswer(text, language) {
   }
 }
 
-function itineraryAnswer(text, language) {
+function itineraryAnswer(text, language, attractionData = attractions) {
   const isThreeDays = containsAny(text, ['三天', '3天', 'three day', '3-day', 'trois jours'])
-  const selections = rankAttractions(text).slice(0, isThreeDays ? 6 : 3)
+  const selections = rankAttractions(text, attractionData).slice(0, isThreeDays ? 6 : 3)
   if (isThreeDays) {
     return {
       text: l(
@@ -516,8 +520,8 @@ function itineraryAnswer(text, language) {
   }
 }
 
-function attractionAnswer(text, language) {
-  const selections = rankAttractions(text).slice(0, 3)
+function attractionAnswer(text, language, attractionData = attractions) {
+  const selections = rankAttractions(text, attractionData).slice(0, 3)
   return {
     text: l(
       language,
@@ -547,16 +551,18 @@ function conversationAnswer(language) {
   }
 }
 
-export function buildGuideContext(input) {
+export function buildGuideContext(input, managedData = {}) {
   const text = String(input || '').toLowerCase()
   const intent = detectGuideIntent(text)
+  const restaurantData = managedData.restaurants || restaurants
+  const attractionData = managedData.attractions || attractions
   return {
     reviewedOn: GUIDE_DATA_REVIEWED_ON,
     intent,
     relevantAttractions: intent.attractionRequested
-      ? rankAttractions(text).slice(0, 5)
+      ? rankAttractions(text, attractionData).slice(0, 5)
       : [],
-    relevantRestaurants: intent.restaurantRequested ? pickRestaurants(text) : [],
+    relevantRestaurants: intent.restaurantRequested ? pickRestaurants(text, restaurantData) : [],
     rules: [
       '只使用提供的数据回答地点、餐厅和开放信息',
       '只有 restaurantRequested 为 true 时才能提供具体餐厅、菜系、预算或用餐推荐',
@@ -568,13 +574,15 @@ export function buildGuideContext(input) {
   }
 }
 
-export function getLocalGuideAnswer(input, language = 'zh') {
+export function getLocalGuideAnswer(input, language = 'zh', managedData = {}) {
   const text = input.trim().toLowerCase()
   const intent = detectGuideIntent(text)
+  const restaurantData = managedData.restaurants || restaurants
+  const attractionData = managedData.attractions || attractions
   let answer
 
   if (intent.primary === 'restaurant') {
-    answer = restaurantAnswer(text, language)
+    answer = restaurantAnswer(text, language, restaurantData)
   } else if (intent.primary === 'transport') {
     answer = {
       text: l(
@@ -597,9 +605,9 @@ export function getLocalGuideAnswer(input, language = 'zh') {
       ],
     }
   } else if (intent.primary === 'itinerary') {
-    answer = itineraryAnswer(text, language)
+    answer = itineraryAnswer(text, language, attractionData)
   } else if (intent.primary === 'attraction') {
-    answer = attractionAnswer(text, language)
+    answer = attractionAnswer(text, language, attractionData)
   } else {
     answer = conversationAnswer(language)
   }

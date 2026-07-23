@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Bot, Check, ChevronDown, Home, Languages, MapPinned } from 'lucide-react'
+import { Bot, Check, ChevronDown, Home, Languages, LockKeyhole, MapPinned } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useLanguage } from '../i18n'
 
@@ -10,6 +10,7 @@ export default function Header() {
     { to: '/', label: tr('首页', 'Home', 'Accueil'), icon: Home, end: true },
     { to: '/chat', label: tr('智能导游', 'Smart guide', 'Guide intelligent'), icon: Bot },
     { to: '/map', label: tr('地图导航', 'Map', 'Carte'), icon: MapPinned },
+    { to: '/admin', label: tr('管理', 'Admin', 'Admin'), icon: LockKeyhole },
   ]
 
   function chooseLanguage(nextLanguage) {

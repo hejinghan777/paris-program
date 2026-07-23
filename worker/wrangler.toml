@@ -10,6 +10,12 @@ WORKERS_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 [ai]
 binding = "AI"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "paris-study-guide-admin"
+database_id = "018d321e-58cb-4e2e-9da3-f1d44d6a5285"
+migrations_dir = "migrations"
+
 [observability]
 enabled = true
 head_sampling_rate = 1

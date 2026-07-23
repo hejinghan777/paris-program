@@ -12,6 +12,7 @@
 - Google Maps 可选接入；未配置密钥时自动使用 OpenStreetMap
 - 8 个研学地点、官方来源与餐厅数据库驱动的本地推荐
 - Cloudflare Workers AI Llama 3.3 70B 安全代理；模型不可用时自动回退到本地推荐
+- 密码保护的管理后台，可在线修改餐厅预算、营业说明、景点地址和关门时间
 - GitHub Pages 自动构建与发布
 
 ## 本地运行
@@ -45,6 +46,15 @@ GitHub Pages 本身不能安全运行服务端模型。`worker/` 使用 Cloudfla
 Llama 3.3 70B Instruct，通过安全代理生成回答，不需要在浏览器中保存模型密钥。部署方法见
 [worker/README.md](worker/README.md)。部署后将 Worker URL 保存为仓库变量
 `GUIDE_API_URL`。未配置该变量或免费额度暂时用完时，网站仍会使用结构化数据库提供稳定推荐。
+
+## 管理后台
+
+部署后的管理入口为：
+
+[https://hejinghan777.github.io/paris-program/#/admin](https://hejinghan777.github.io/paris-program/#/admin)
+
+管理员密码保存在 Cloudflare Worker 的 `ADMIN_PASSWORD` secret 中，不写入浏览器代码或 GitHub
+仓库。内容修改保存在 D1 数据库；保存后，餐厅地图和智能导游会自动读取最新数据。
 
 ## 发布
 

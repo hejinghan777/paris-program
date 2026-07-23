@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom'
 import RecommendationRouteMap from '../components/maps/RecommendationRouteMap'
 import { GUIDE_DATA_REVIEWED_ON } from '../data/guideKnowledge'
 import { useLanguage } from '../i18n'
+import { useManagedContent } from '../managedContent'
 import { askGuide, hasRemoteGuide } from '../services/guideApi'
 
 function RecommendationCard({ recommendation }) {
@@ -156,6 +157,7 @@ function Message({ message }) {
 
 export default function ChatPage() {
   const { language, tr } = useLanguage()
+  const { restaurants, attractions } = useManagedContent()
   const getInitialMessage = () => ({
     role: 'assistant',
     text: tr(
@@ -214,7 +216,7 @@ export default function ChatPage() {
     setValue('')
     setIsReplying(true)
     const history = messages.map(({ role, text }) => ({ role, text }))
-    const answer = await askGuide(trimmed, language, history)
+    const answer = await askGuide(trimmed, language, history, { restaurants, attractions })
     setMessages((current) => [
       ...current,
       {
