@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  color: #14213d;
-  background: #f8f4ea;
+  color: #17243a;
+  background: #f6f5f0;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
@@ -20,8 +20,32 @@ body,
 
 button,
 a,
-input {
+input,
+select {
   -webkit-tap-highlight-color: transparent;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgb(12 29 57 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(12 29 57 / 4%) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(to bottom, black 10%, transparent 88%);
+}
+
+.thin-scrollbar {
+  scrollbar-color: rgb(12 29 57 / 20%) transparent;
+  scrollbar-width: thin;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgb(12 29 57 / 20%);
 }
 
 .leaflet-container {
@@ -29,9 +53,25 @@ input {
   font-family: inherit;
 }
 
+.leaflet-popup-content-wrapper {
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgb(12 29 57 / 18%);
+}
+
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  color: #14213d;
+  color: #0c1d39;
+}
+
+.leaflet-control-zoom {
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgb(12 29 57 / 14%) !important;
+}
+
+.leaflet-control-zoom a {
+  color: #0c1d39 !important;
 }
 
 .user-location-dot {
@@ -41,4 +81,35 @@ input {
   border-radius: 9999px;
   background: #2563eb;
   box-shadow: 0 0 0 2px rgb(37 99 235 / 25%), 0 2px 8px rgb(0 0 0 / 35%);
+}
+
+.restaurant-number-marker {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 2px solid white;
+  border-radius: 10px 10px 10px 3px;
+  background: #0c1d39;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 6px 16px rgb(12 29 57 / 28%);
+  transform: rotate(-2deg);
+}
+
+.restaurant-number-marker.is-selected {
+  background: #e6404f;
+  transform: scale(1.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

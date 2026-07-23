@@ -40,6 +40,8 @@ jobs:
         run: pnpm build
         env:
           VITE_DEPLOY_TARGET: github-pages
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          VITE_GUIDE_API_URL: ${{ vars.GUIDE_API_URL }}
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6

@@ -1,51 +1,50 @@
-# Paris AI Tourist Guide
+# 法国研学第一组导游地图
 
-Recovered, maintainable source for the Paris summer-school guide deployed at
-<https://epsi-paris-summerschool.web.app>.
+面向巴黎研学小组的中文旅行工具，包含餐厅资料、浏览器精确定位、站内步行导航、结构化景点数据库和智能导游。
 
-## What was recovered
+## 已实现
 
-- React/Vite single-page application with Home, Trip Guide and Restaurant Map routes
-- 26-item restaurant snapshot and specialty filters
-- Leaflet/OpenStreetMap markers and walking directions
-- The original Paris navy, gold and cream visual direction
+- 全新中文旅行应用界面与移动端布局
+- 右上角支持中文、English、Français 三语切换并记住用户选择
+- 26 家餐厅搜索、菜系筛选、价格/评分/距离排序
+- 高精度浏览器定位、定位精度提示和持续位置更新
+- 站内步行路线、距离、时间与分步指引
+- Google Maps 可选接入；未配置密钥时自动使用 OpenStreetMap
+- 8 个研学地点、官方来源与餐厅数据库驱动的本地推荐
+- Gemini 3.5 Flash-Lite 安全代理示例；模型不可用时自动回退到本地推荐
+- GitHub Pages 自动构建与发布
 
-## Data policy
-
-The restaurant collection is stored in `src/data/restaurants.js`. It is a dated editorial
-snapshot recovered from the deployed application, not a live directory. The interface labels
-ratings and prices accordingly and links every venue to a live Google Maps search for verification.
-
-Time-sensitive travel answers live in `src/data/travelTips.js` and link to official sources. The
-review date is displayed in the Trip Guide.
-
-## Local development
+## 本地运行
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Create a production build with:
+生产构建：
 
 ```bash
 pnpm build
 ```
 
-## GitHub Pages
+## Google Maps
 
-The workflow in `.github/workflows/deploy-pages.yml` builds and publishes the `main` branch to:
+在仓库 `Settings → Secrets and variables → Actions` 中创建 Actions secret：
 
-<https://hejinghan777.github.io/paris-program/>
+`GOOGLE_MAPS_API_KEY`
 
-The Pages build uses the `/paris-program/` asset base and hash-based client routing so Home, Trip
-Guide and Restaurants continue to work when the page is refreshed.
+需要在 Google Cloud 启用 Maps JavaScript API 和结算，并将密钥限制为 HTTP referrer：
 
-## Optional Firebase Hosting
+`https://hejinghan777.github.io/paris-program/*`
 
-`firebase.json` deploys the Vite `dist` directory, keeps client-side routes working and gives
-fingerprinted assets a long-lived immutable cache.
+浏览器地图密钥会随前端代码发送给访客，因此必须使用来源限制；不要使用无限制密钥。
 
-```bash
-firebase deploy --only hosting
-```
+## 智能模型
+
+GitHub Pages 无法安全保存 Gemini API 密钥。`worker/` 提供 Cloudflare Worker 安全代理，部署方法见 [worker/README.md](worker/README.md)。部署后将 Worker URL 保存为仓库变量 `GUIDE_API_URL`。未配置该变量时，网站仍会使用结构化数据库提供稳定推荐。
+
+## 发布
+
+推送到 `main` 分支后，`.github/workflows/deploy-pages.yml` 会自动构建并发布到：
+
+[https://hejinghan777.github.io/paris-program/](https://hejinghan777.github.io/paris-program/)

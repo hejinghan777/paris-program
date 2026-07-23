@@ -1,0 +1,7 @@
+name = "paris-study-guide"
+main = "src/index.js"
+compatibility_date = "2026-07-23"
+
+[vars]
+ALLOWED_ORIGIN = "https://hejinghan777.github.io"
+GEMINI_MODEL = "gemini-3.5-flash-lite"

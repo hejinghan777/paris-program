@@ -6,7 +6,7 @@ import MapPage from './pages/MapPage'
 
 export default function App() {
   return (
-    <div className="flex min-h-screen flex-col bg-paris-cream">
+    <div className="flex min-h-screen flex-col bg-paris-cream text-paris-ink">
       <Header />
       <main className="flex min-h-0 flex-1 flex-col">
         <Routes>
