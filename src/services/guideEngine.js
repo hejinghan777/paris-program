@@ -10,6 +10,20 @@ const cuisineRules = [
   { words: ['素食', '纯素', 'vegan', 'végan'], specialty: 'Vegan' },
 ]
 
+const specialtyNames = {
+  'French Bistro': { zh: '法式小馆', en: 'French bistro', fr: 'bistrot français' },
+  'Fine Dining': { zh: '精致餐饮', en: 'fine dining', fr: 'restaurant gastronomique' },
+  Italian: { zh: '意大利菜', en: 'Italian', fr: 'cuisine italienne' },
+  Japanese: { zh: '日本料理', en: 'Japanese', fr: 'cuisine japonaise' },
+  Chinese: { zh: '中餐', en: 'Chinese', fr: 'cuisine chinoise' },
+  'Middle Eastern': { zh: '中东料理', en: 'Middle Eastern', fr: 'cuisine du Moyen-Orient' },
+  Crêperie: { zh: '可丽饼', en: 'crêperie', fr: 'crêperie' },
+  'Bakery & Pastry': { zh: '烘焙甜点', en: 'bakery & pastry', fr: 'boulangerie-pâtisserie' },
+  'Wine Bar': { zh: '葡萄酒吧', en: 'wine bar', fr: 'bar à vins' },
+  'Brasserie & Seafood': { zh: '海鲜餐厅', en: 'brasserie & seafood', fr: 'brasserie et fruits de mer' },
+  Vegan: { zh: '纯素餐厅', en: 'vegan', fr: 'restaurant végan' },
+}
+
 const attractionDetails = {
   'eiffel-tower': {
     en: ['7th arrondissement', '2–3 hours'],
@@ -136,6 +150,66 @@ function hasBudgetIntent(text) {
   return containsAny(text, ['预算', '人均', '每人', 'budget', 'per person', 'par personne', 'par tête'])
 }
 
+function hasRestaurantIntent(text) {
+  return containsAny(text, [
+    '餐厅',
+    '餐馆',
+    '吃',
+    '饭',
+    '用餐',
+    '午餐',
+    '晚餐',
+    '美食',
+    '中餐',
+    '中国菜',
+    '法餐',
+    '法国菜',
+    '意大利菜',
+    '披萨',
+    '意面',
+    '寿司',
+    '拉面',
+    '日本料理',
+    '中东菜',
+    '中东料理',
+    '可丽饼',
+    '甜点',
+    '面包',
+    '烘焙',
+    '葡萄酒吧',
+    '海鲜',
+    '素食',
+    '纯素',
+    'restaurant',
+    'food',
+    'dinner',
+    'lunch',
+    'cuisine',
+    'repas',
+    'déjeuner',
+    'dîner',
+    'pizzeria',
+    'sushi',
+    'chinese',
+    'italian',
+    'japanese',
+    'middle eastern',
+    'crêperie',
+    'wine bar',
+    'seafood',
+    'pâtisserie',
+    'chinois',
+    'italien',
+    'italienne',
+    'japonais',
+    'japonaise',
+  ])
+}
+
+function specialtyName(specialty, language) {
+  return specialtyNames[specialty]?.[language] || specialty
+}
+
 function formatRestaurantBudget(restaurant, language) {
   const range = `€${restaurant.budgetEur.min}–${restaurant.budgetEur.max}`
   return l(language, `${range}/人（估算）`, `${range} pp (estimate)`, `${range}/pers. (estimation)`)
@@ -224,7 +298,7 @@ function restaurantAnswer(text, language) {
   const description = matches
     .map(
       (restaurant, index) =>
-        `${index + 1}. ${restaurant.name}（${restaurant.specialty}，${formatRestaurantBudget(restaurant, 'zh')}）`,
+        `${index + 1}. ${restaurant.name}（${specialtyName(restaurant.specialty, 'zh')}，${formatRestaurantBudget(restaurant, 'zh')}）`,
     )
     .join('；')
   return {
@@ -238,12 +312,12 @@ function restaurantAnswer(text, language) {
       type: 'restaurant',
       id: restaurant.id,
       title: restaurant.name,
-      meta: `${restaurant.specialty} · ${formatRestaurantBudget(restaurant, language)}`,
+      meta: `${specialtyName(restaurant.specialty, language)} · ${formatRestaurantBudget(restaurant, language)}`,
       description: l(
         language,
-        `收录在小组资料库中的${restaurant.specialty}餐厅，可在站内地图查看位置和步行路线。`,
+        `收录在小组资料库中的${specialtyName(restaurant.specialty, 'zh')}，可在站内地图查看位置和步行路线。`,
         restaurant.blurb,
-        `Une adresse parisienne de la catégorie ${restaurant.specialty}, avec position et itinéraire à pied sur la carte intégrée.`,
+        `Une adresse parisienne de la catégorie ${specialtyName(restaurant.specialty, 'fr')}, avec position et itinéraire à pied sur la carte intégrée.`,
       ),
       budgetEur: restaurant.budgetEur,
       lat: restaurant.lat,
@@ -321,20 +395,7 @@ export function getLocalGuideAnswer(input, language = 'zh') {
   const text = input.trim().toLowerCase()
   let answer
 
-  if (
-    containsAny(text, [
-      '餐厅',
-      '吃',
-      '饭',
-      '美食',
-      '中餐',
-      '法餐',
-      'restaurant',
-      'food',
-      'dinner',
-      'lunch',
-    ])
-  ) {
+  if (hasRestaurantIntent(text)) {
     answer = restaurantAnswer(text, language)
   } else if (containsAny(text, ['地铁', '公交', '交通', '车票', 'navigo', 'metro', 'transport', 'billet'])) {
     answer = {
