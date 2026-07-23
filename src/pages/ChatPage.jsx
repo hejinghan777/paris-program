@@ -12,6 +12,7 @@ import {
   UserRound,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import RecommendationRouteMap from '../components/maps/RecommendationRouteMap'
 import { GUIDE_DATA_REVIEWED_ON } from '../data/guideKnowledge'
 import { useLanguage } from '../i18n'
 import { askGuide, hasRemoteGuide } from '../services/guideApi'
@@ -69,14 +70,17 @@ function Message({ message }) {
           <p className="whitespace-pre-line">{message.text}</p>
 
           {message.recommendations?.length > 0 && (
-            <div className="mt-3 grid gap-2">
-              {message.recommendations.map((recommendation) => (
-                <RecommendationCard
-                  key={`${recommendation.type}-${recommendation.id}`}
-                  recommendation={recommendation}
-                />
-              ))}
-            </div>
+            <>
+              <div className="mt-3 grid gap-2">
+                {message.recommendations.map((recommendation) => (
+                  <RecommendationCard
+                    key={`${recommendation.type}-${recommendation.id}`}
+                    recommendation={recommendation}
+                  />
+                ))}
+              </div>
+              <RecommendationRouteMap recommendations={message.recommendations} />
+            </>
           )}
 
           {message.sources?.length > 0 && (

@@ -163,3 +163,38 @@ export async function fetchWalkingRoute(origin, destination, signal, language = 
       })),
   }
 }
+
+export async function fetchWaypointRoute(points, signal, language = 'zh') {
+  if (!Array.isArray(points) || points.length < 2) return null
+  const coordinates = points.map((point) => `${point.lng},${point.lat}`).join(';')
+  const url = `${ROUTING_ENDPOINT}/${coordinates}?overview=full&geometries=geojson&steps=false`
+  const response = await fetch(url, { signal })
+
+  if (!response.ok) {
+    throw new Error(
+      language === 'fr'
+        ? 'Le parcours recommandé est temporairement indisponible'
+        : language === 'en'
+          ? 'The recommended route is temporarily unavailable'
+          : '推荐路线暂时无法生成',
+    )
+  }
+
+  const payload = await response.json()
+  if (payload.code !== 'Ok' || !payload.routes?.length) {
+    throw new Error(
+      language === 'fr'
+        ? 'Aucun parcours à pied trouvé entre ces lieux'
+        : language === 'en'
+          ? 'No walking route was found between these places'
+          : '这些地点之间暂未找到步行路线',
+    )
+  }
+
+  const route = payload.routes[0]
+  return {
+    coordinates: route.geometry.coordinates.map(([lng, lat]) => [lat, lng]),
+    distanceMeters: route.distance,
+    durationSeconds: route.duration,
+  }
+}

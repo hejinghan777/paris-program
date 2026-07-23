@@ -160,6 +160,8 @@ function restaurantAnswer(text, language) {
         restaurant.blurb,
         `Une adresse parisienne de la catégorie ${restaurant.specialty}, avec position et itinéraire à pied sur la carte intégrée.`,
       ),
+      lat: restaurant.lat,
+      lng: restaurant.lng,
     })),
     sources: [],
   }
@@ -182,6 +184,8 @@ function itineraryAnswer(text, language) {
         title: attractionName(attraction, language),
         meta: attractionMeta(attraction, language),
         description: language === 'zh' ? attraction.studyValue : attractionDescription(attraction, language),
+        lat: attraction.lat,
+        lng: attraction.lng,
       })),
       sources: uniqueSources(selections.map((attraction) => attractionSource(attraction, language))),
     }
@@ -200,6 +204,8 @@ function itineraryAnswer(text, language) {
       title: attractionName(attraction, language),
       meta: attractionMeta(attraction, language),
       description: language === 'zh' ? attraction.studyValue : attractionDescription(attraction, language),
+      lat: attraction.lat,
+      lng: attraction.lng,
     })),
     sources: uniqueSources(selections.map((attraction) => attractionSource(attraction, language))),
   }
@@ -222,6 +228,8 @@ function attractionAnswer(text, language) {
       title: attractionName(attraction, language),
       meta: attractionMeta(attraction, language),
       description: attractionDescription(attraction, language),
+      lat: attraction.lat,
+      lng: attraction.lng,
     })),
     sources: uniqueSources(selections.map((attraction) => attractionSource(attraction, language))),
   }
