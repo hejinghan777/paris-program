@@ -281,6 +281,20 @@ function rankAttractions(text) {
 
 function restaurantAnswer(text, language) {
   const budgetPerPerson = extractBudgetPerPerson(text)
+  const mentionsSpecificTime = containsAny(text, [
+    '今天',
+    '下午',
+    '今晚',
+    '中午',
+    'today',
+    'afternoon',
+    'tonight',
+    'this evening',
+    'aujourd’hui',
+    "aujourd'hui",
+    'cet après-midi',
+    'ce soir',
+  ])
   if (hasBudgetIntent(text) && !budgetPerPerson) {
     return {
       text: l(
@@ -304,9 +318,9 @@ function restaurantAnswer(text, language) {
   return {
     text: l(
       language,
-      `${budgetPerPerson ? `按每人约 €${budgetPerPerson} 的预算，` : ''}根据餐厅资料库，我建议先比较：${description}。预算区间是每人估算值，饮品、套餐和菜单变化可能增加实际花费；点击卡片可在站内地图查看位置和步行路线。`,
-      `${budgetPerPerson ? `For a budget of about €${budgetPerPerson} per person, ` : ''}compare ${matches.map((item) => `${item.name} (${formatRestaurantBudget(item, 'en')})`).join(', ')}. These are estimated per-person ranges; drinks, set menus and menu changes may increase the bill. Open a card for the in-app map and walking route.`,
-      `${budgetPerPerson ? `Avec un budget d’environ ${budgetPerPerson} € par personne, ` : ''}comparez ${matches.map((item) => `${item.name} (${formatRestaurantBudget(item, 'fr')})`).join(', ')}. Ce sont des estimations par personne ; boissons, menus et changements de carte peuvent augmenter l’addition. Ouvrez une fiche pour la carte et l’itinéraire intégrés.`,
+      `${budgetPerPerson ? `按每人约 €${budgetPerPerson} 的预算，` : ''}根据餐厅资料库，我建议先比较：${description}。预算区间是每人估算值，饮品、套餐和菜单变化可能增加实际花费。${mentionsSpecificTime ? '你提到了今天的具体时段，但资料库没有餐厅的实时营业状态，请在出发前确认今天是否营业。' : ''}点击卡片可在站内地图查看位置和步行路线。`,
+      `${budgetPerPerson ? `For a budget of about €${budgetPerPerson} per person, ` : ''}compare ${matches.map((item) => `${item.name} (${formatRestaurantBudget(item, 'en')})`).join(', ')}. These are estimated per-person ranges; drinks, set menus and menu changes may increase the bill. ${mentionsSpecificTime ? 'You mentioned a time today, but the database does not provide live opening status; confirm that the restaurant is open before leaving. ' : ''}Open a card for the in-app map and walking route.`,
+      `${budgetPerPerson ? `Avec un budget d’environ ${budgetPerPerson} € par personne, ` : ''}comparez ${matches.map((item) => `${item.name} (${formatRestaurantBudget(item, 'fr')})`).join(', ')}. Ce sont des estimations par personne ; boissons, menus et changements de carte peuvent augmenter l’addition. ${mentionsSpecificTime ? 'Vous avez indiqué un horaire aujourd’hui, mais la base ne fournit pas l’ouverture en temps réel ; vérifiez avant de partir. ' : ''}Ouvrez une fiche pour la carte et l’itinéraire intégrés.`,
     ),
     recommendations: matches.map((restaurant) => ({
       type: 'restaurant',
