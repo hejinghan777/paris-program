@@ -297,18 +297,36 @@ function hasAttractionIntent(text) {
   ])
 }
 
+function hasWeatherIntent(text) {
+  return containsAny(text, [
+    '天气',
+    '气温',
+    '温度',
+    '天气预报',
+    '会下雨吗',
+    'weather',
+    'temperature',
+    'forecast',
+    'météo',
+    'température',
+    'prévisions',
+  ])
+}
+
 export function detectGuideIntent(input) {
   const text = String(input || '').trim().toLowerCase()
   const restaurantRequested = hasRestaurantIntent(text)
   const transportRequested = hasTransportIntent(text)
   const itineraryRequested = hasItineraryIntent(text)
   const attractionRequested = hasAttractionIntent(text) || itineraryRequested
+  const weatherRequested = hasWeatherIntent(text)
 
   let primary = 'conversation'
   if (restaurantRequested) primary = 'restaurant'
   else if (transportRequested) primary = 'transport'
   else if (itineraryRequested) primary = 'itinerary'
   else if (attractionRequested) primary = 'attraction'
+  else if (weatherRequested) primary = 'weather'
 
   return {
     primary,
@@ -316,6 +334,7 @@ export function detectGuideIntent(input) {
     attractionRequested,
     transportRequested,
     itineraryRequested,
+    weatherRequested,
   }
 }
 
@@ -541,7 +560,8 @@ export function buildGuideContext(input) {
     rules: [
       '只使用提供的数据回答地点、餐厅和开放信息',
       '只有 restaurantRequested 为 true 时才能提供具体餐厅、菜系、预算或用餐推荐',
-      '普通问候和一般对话只自然回答，不主动推荐景点或餐厅',
+      '普通问候和一般对话由语言模型直接回答，不主动推荐景点或餐厅',
+      'weatherRequested 为 true 时使用 liveWeather 回答巴黎实时天气',
       '价格、开放时间和评分可能变化，必须提示用户查看官方来源',
       '不得编造实时拥挤度、营业时间或票价',
     ],

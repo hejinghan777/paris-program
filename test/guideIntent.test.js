@@ -43,3 +43,13 @@ test('transport questions do not preload restaurant or attraction data', () => {
   assert.deepEqual(context.relevantRestaurants, [])
   assert.deepEqual(context.relevantAttractions, [])
 })
+
+test('a Paris weather question requests live weather without restaurant data', () => {
+  const context = buildGuideContext('今天巴黎天气怎么样？')
+
+  assert.equal(context.intent.primary, 'weather')
+  assert.equal(context.intent.weatherRequested, true)
+  assert.equal(context.intent.restaurantRequested, false)
+  assert.deepEqual(context.relevantRestaurants, [])
+  assert.deepEqual(context.relevantAttractions, [])
+})

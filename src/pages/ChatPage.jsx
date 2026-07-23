@@ -190,9 +190,9 @@ export default function ChatPage() {
       'Recommander des restaurants à 30 € par personne',
     ),
     tr(
-      '下雨天适合参观哪里？',
-      'Where should we visit on a rainy day?',
-      'Que visiter un jour de pluie ?',
+      '今天巴黎天气怎么样？',
+      'What is the weather in Paris today?',
+      'Quel temps fait-il à Paris aujourd’hui ?',
     ),
   ]
 
@@ -213,7 +213,8 @@ export default function ChatPage() {
     setMessages((current) => [...current, { role: 'user', text: trimmed }])
     setValue('')
     setIsReplying(true)
-    const answer = await askGuide(trimmed, language)
+    const history = messages.map(({ role, text }) => ({ role, text }))
+    const answer = await askGuide(trimmed, language, history)
     setMessages((current) => [
       ...current,
       {
@@ -244,9 +245,9 @@ export default function ChatPage() {
           </h1>
           <p className="mt-2 text-sm leading-6 text-white/55">
             {tr(
-              '语言模型会判断问题类型，只检索与你当前问题相关的地点或餐厅资料。',
-              'The language model identifies your request and retrieves only the relevant place or restaurant data.',
-              'Le modèle détecte votre demande et ne consulte que les données de lieux ou de restaurants utiles.',
+              '语言模型会直接回答你的问题，并按需融合实时天气、研学地点或餐厅资料。',
+              'The language model answers directly and adds live weather, study-place or restaurant data only when relevant.',
+              'Le modèle répond directement et ajoute la météo, les lieux d’étude ou les restaurants uniquement si nécessaire.',
             )}
           </p>
 
@@ -308,9 +309,9 @@ export default function ChatPage() {
                 <p className="mt-0.5 flex items-center gap-1.5 text-[10px] text-paris-ink/45">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   {tr(
-                    '数据库推荐服务在线',
-                    'Database recommendation service online',
-                    'Service de recommandation disponible',
+                    '语言模型与实时资料服务在线',
+                    'Language model and live-data service online',
+                    'Modèle linguistique et données en direct disponibles',
                   )}
                 </p>
               </div>
@@ -336,9 +337,9 @@ export default function ChatPage() {
                 <div className="flex items-center gap-2 rounded-2xl rounded-tl-sm border border-paris-navy/8 bg-white px-4 py-3 text-xs text-paris-ink/45 shadow-sm">
                   <LoaderCircle size={14} className="animate-spin" aria-hidden="true" />
                   {tr(
-                    '正在查询地点资料并生成建议…',
-                    'Searching place data and preparing an answer…',
-                    'Recherche des données et préparation de la réponse…',
+                    '语言模型正在理解问题并生成回答…',
+                    'The language model is preparing an answer…',
+                    'Le modèle linguistique prépare une réponse…',
                   )}
                 </div>
               </div>
@@ -376,9 +377,9 @@ export default function ChatPage() {
                   }
                 }}
                 placeholder={tr(
-                  '例如：每人预算 30 欧，推荐中餐厅',
-                  'Example: recommend Chinese restaurants for €30 per person',
-                  'Exemple : restaurants chinois à 30 € par personne',
+                  '可以问任何问题；询问餐厅时可提供菜系和每人预算',
+                  'Ask anything; for restaurants, include a cuisine and per-person budget',
+                  'Posez toute question ; pour un restaurant, indiquez la cuisine et le budget',
                 )}
                 className="max-h-28 min-h-[44px] min-w-0 flex-1 resize-none rounded-2xl border border-paris-navy/10 bg-paris-cream/55 px-4 py-3 text-sm outline-none transition placeholder:text-paris-ink/35 focus:border-paris-blue focus:ring-2 focus:ring-paris-blue/10"
                 disabled={isReplying}

@@ -1,6 +1,7 @@
 name = "paris-study-guide"
 main = "src/index.js"
 compatibility_date = "2026-07-23"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 ALLOWED_ORIGIN = "https://hejinghan777.github.io"
@@ -8,3 +9,7 @@ WORKERS_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 
 [ai]
 binding = "AI"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
