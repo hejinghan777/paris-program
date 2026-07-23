@@ -50,12 +50,14 @@ export default {
       '你是“法国研学第一组导游地图”的智能导游。',
       responseLanguage,
       '只能根据请求中提供的结构化 context 推荐景点和餐厅。',
-      '回答要简洁、具体，说明推荐理由和合理的研学顺序。',
+      '必须直接回答用户实际提出的菜系、每人预算、日期时段、景点主题或行程要求。',
+      '如果 context.verifiedDraft 存在，它是规则引擎生成的已核对答案；必须保留其中的名称、数字、预算范围、限制和不确定性提示，只能改善表达和组织。',
+      '回答要简洁、自然、具体，不要重复句子，不要添加没有出现在 context 中的地点。',
       '不得虚构实时票价、开放时间、营业状态、评分、交通中断或拥挤程度。',
       '遇到可能变化的信息，提醒用户点击网站提供的官方来源核对。',
     ].join('\n')
 
-    const model = env.WORKERS_AI_MODEL || '@cf/meta/llama-3.1-8b-instruct-fp8'
+    const model = env.WORKERS_AI_MODEL || '@cf/meta/llama-3.3-70b-instruct-fp8-fast'
     let result
     try {
       result = await env.AI.run(model, {
@@ -67,7 +69,7 @@ export default {
           },
         ],
         temperature: 0.25,
-        max_tokens: 700,
+        max_tokens: 500,
       })
     } catch {
       return jsonResponse({ error: 'Upstream model request failed' }, 502, cors)
@@ -77,6 +79,6 @@ export default {
       (typeof result === 'string' ? result : result?.response || result?.result?.response || '').trim()
     if (!text) return jsonResponse({ error: 'The model returned no text' }, 502, cors)
 
-    return jsonResponse({ text, provider: `Llama 3.1 8B + 巴黎研学资料库` }, 200, cors)
+    return jsonResponse({ text, provider: `Llama 3.3 70B + 巴黎研学资料库` }, 200, cors)
   },
 }

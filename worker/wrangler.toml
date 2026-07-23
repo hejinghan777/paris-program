@@ -4,7 +4,7 @@ compatibility_date = "2026-07-23"
 
 [vars]
 ALLOWED_ORIGIN = "https://hejinghan777.github.io"
-WORKERS_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8"
+WORKERS_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 
 [ai]
 binding = "AI"

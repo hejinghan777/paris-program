@@ -276,9 +276,9 @@ export default function ChatPage() {
             <p className="mt-2 text-sm font-bold">
               {hasRemoteGuide()
                 ? tr(
-                    'Llama 3.1 8B + 本地回退',
-                    'Llama 3.1 8B + local fallback',
-                    'Llama 3.1 8B + repli local',
+                    'Llama 3.3 70B + 本地回退',
+                    'Llama 3.3 70B + local fallback',
+                    'Llama 3.3 70B + repli local',
                   )
                 : tr('数据库检索推荐', 'Database recommendations', 'Recommandations de la base')}
             </p>

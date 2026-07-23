@@ -20,7 +20,10 @@ export async function askGuide(message, language = 'zh') {
       body: JSON.stringify({
         message,
         language,
-        context: buildGuideContext(message),
+        context: {
+          ...buildGuideContext(message),
+          verifiedDraft: localAnswer.text,
+        },
       }),
       signal: controller.signal,
     })

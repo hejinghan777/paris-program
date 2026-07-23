@@ -1,6 +1,6 @@
 # 智能导游安全代理
 
-这个 Cloudflare Worker 使用 Workers AI 的 Llama 3.1 8B Instruct 模型。模型通过 `AI`
+这个 Cloudflare Worker 使用 Workers AI 的 Llama 3.3 70B Instruct 模型。模型通过 `AI`
 binding 在服务器端运行，不会向 GitHub Pages 暴露任何账户凭据。Cloudflare Workers AI
 提供每日免费额度；额度耗尽或服务异常时，网页会自动回退到本地结构化推荐。
 
