@@ -27,7 +27,7 @@ export default {
 
     if (request.method !== 'POST') return jsonResponse({ error: 'Method not allowed' }, 405, cors)
     if (origin !== allowedOrigin) return jsonResponse({ error: 'Origin not allowed' }, 403, cors)
-    if (!env.GEMINI_API_KEY) return jsonResponse({ error: 'Model secret is not configured' }, 503, cors)
+    if (!env.AI) return jsonResponse({ error: 'Workers AI binding is not configured' }, 503, cors)
 
     let payload
     try {
@@ -55,48 +55,28 @@ export default {
       '遇到可能变化的信息，提醒用户点击网站提供的官方来源核对。',
     ].join('\n')
 
-    const model = env.GEMINI_MODEL || 'gemini-3.5-flash-lite'
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': env.GEMINI_API_KEY,
-        },
-        body: JSON.stringify({
-          systemInstruction: {
-            parts: [{ text: systemInstruction }],
+    const model = env.WORKERS_AI_MODEL || '@cf/meta/llama-3.1-8b-instruct-fp8'
+    let result
+    try {
+      result = await env.AI.run(model, {
+        messages: [
+          { role: 'system', content: systemInstruction },
+          {
+            role: 'user',
+            content: `用户问题：${message}\n\n已检索的真实资料：\n${JSON.stringify(context)}`,
           },
-          contents: [
-            {
-              role: 'user',
-              parts: [
-                {
-                  text: `用户问题：${message}\n\n已检索的真实资料：\n${JSON.stringify(context)}`,
-                },
-              ],
-            },
-          ],
-          generationConfig: {
-            temperature: 0.25,
-            maxOutputTokens: 700,
-          },
-        }),
-      },
-    )
-
-    if (!response.ok) {
+        ],
+        temperature: 0.25,
+        max_tokens: 700,
+      })
+    } catch {
       return jsonResponse({ error: 'Upstream model request failed' }, 502, cors)
     }
 
-    const result = await response.json()
-    const text = result.candidates?.[0]?.content?.parts
-      ?.map((part) => part.text || '')
-      .join('')
-      .trim()
+    const text =
+      (typeof result === 'string' ? result : result?.response || result?.result?.response || '').trim()
     if (!text) return jsonResponse({ error: 'The model returned no text' }, 502, cors)
 
-    return jsonResponse({ text, provider: `Gemini ${model} + 巴黎研学资料库` }, 200, cors)
+    return jsonResponse({ text, provider: `Llama 3.1 8B + 巴黎研学资料库` }, 200, cors)
   },
 }

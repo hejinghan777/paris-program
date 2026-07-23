@@ -11,7 +11,7 @@
 - 站内步行路线、距离、时间与分步指引
 - Google Maps 可选接入；未配置密钥时自动使用 OpenStreetMap
 - 8 个研学地点、官方来源与餐厅数据库驱动的本地推荐
-- Gemini 3.5 Flash-Lite 安全代理示例；模型不可用时自动回退到本地推荐
+- Cloudflare Workers AI Llama 3.1 8B 安全代理；模型不可用时自动回退到本地推荐
 - GitHub Pages 自动构建与发布
 
 ## 本地运行
@@ -41,7 +41,10 @@ pnpm build
 
 ## 智能模型
 
-GitHub Pages 无法安全保存 Gemini API 密钥。`worker/` 提供 Cloudflare Worker 安全代理，部署方法见 [worker/README.md](worker/README.md)。部署后将 Worker URL 保存为仓库变量 `GUIDE_API_URL`。未配置该变量时，网站仍会使用结构化数据库提供稳定推荐。
+GitHub Pages 本身不能安全运行服务端模型。`worker/` 使用 Cloudflare Workers AI 的
+Llama 3.1 8B Instruct，通过安全代理生成回答，不需要在浏览器中保存模型密钥。部署方法见
+[worker/README.md](worker/README.md)。部署后将 Worker URL 保存为仓库变量
+`GUIDE_API_URL`。未配置该变量或免费额度暂时用完时，网站仍会使用结构化数据库提供稳定推荐。
 
 ## 发布
 
