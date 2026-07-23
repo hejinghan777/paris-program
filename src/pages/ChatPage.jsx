@@ -244,9 +244,9 @@ export default function ChatPage() {
           </h1>
           <p className="mt-2 text-sm leading-6 text-white/55">
             {tr(
-              '从结构化地点资料和餐厅数据库中检索，再生成与你的问题相关的建议。',
-              'Retrieves structured place and restaurant data before producing a relevant answer.',
-              'Recherche d’abord dans les données structurées des lieux et restaurants.',
+              '语言模型会判断问题类型，只检索与你当前问题相关的地点或餐厅资料。',
+              'The language model identifies your request and retrieves only the relevant place or restaurant data.',
+              'Le modèle détecte votre demande et ne consulte que les données de lieux ou de restaurants utiles.',
             )}
           </p>
 
@@ -283,6 +283,12 @@ export default function ChatPage() {
                 : tr('数据库检索推荐', 'Database recommendations', 'Recommandations de la base')}
             </p>
             <p className="mt-1 text-[11px] leading-5 text-white/45">
+              {tr(
+                '仅在询问餐厅、菜系或用餐预算时读取餐厅资料。',
+                'Restaurant data is used only for restaurant, cuisine or dining-budget questions.',
+                'Les données de restaurants ne sont utilisées que pour les questions de repas, de cuisine ou de budget.',
+              )}
+              <br />
               {tr('资料核对日期：', 'Data reviewed: ', 'Données vérifiées : ')}
               {GUIDE_DATA_REVIEWED_ON}
             </p>

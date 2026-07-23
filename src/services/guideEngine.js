@@ -206,6 +206,119 @@ function hasRestaurantIntent(text) {
   ])
 }
 
+function hasTransportIntent(text) {
+  return containsAny(text, [
+    '地铁',
+    '公交',
+    '交通',
+    '车票',
+    '换乘',
+    '火车',
+    'rer',
+    'navigo',
+    'metro',
+    'métro',
+    'bus',
+    'tram',
+    'transport',
+    'ticket',
+    'billet',
+  ])
+}
+
+function hasItineraryIntent(text) {
+  return containsAny(text, [
+    '行程',
+    '路线',
+    '一天',
+    '三天',
+    '几天',
+    '怎么安排',
+    'plan',
+    'itinerary',
+    'one day',
+    'three day',
+    '3-day',
+    'route',
+    'itinéraire',
+    'parcours',
+    'journée',
+    'trois jours',
+  ])
+}
+
+function hasAttractionIntent(text) {
+  return containsAny(text, [
+    '景点',
+    '地点',
+    '参观',
+    '博物馆',
+    '美术馆',
+    '埃菲尔铁塔',
+    '卢浮宫',
+    '奥赛',
+    '凡尔赛',
+    '凯旋门',
+    '巴黎圣母院',
+    '科学',
+    '科技',
+    '历史',
+    '艺术',
+    '建筑',
+    '地标',
+    '研学',
+    '下雨',
+    '雨天',
+    '室内',
+    '免费',
+    'attraction',
+    'place to visit',
+    'visit',
+    'museum',
+    'eiffel',
+    'louvre',
+    'orsay',
+    'versailles',
+    'science',
+    'history',
+    'art',
+    'architecture',
+    'landmark',
+    'study visit',
+    'rainy',
+    'musée',
+    'visiter',
+    'tour eiffel',
+    'sciences',
+    'histoire',
+    'architecture',
+    'monument',
+    'pluie',
+  ])
+}
+
+export function detectGuideIntent(input) {
+  const text = String(input || '').trim().toLowerCase()
+  const restaurantRequested = hasRestaurantIntent(text)
+  const transportRequested = hasTransportIntent(text)
+  const itineraryRequested = hasItineraryIntent(text)
+  const attractionRequested = hasAttractionIntent(text) || itineraryRequested
+
+  let primary = 'conversation'
+  if (restaurantRequested) primary = 'restaurant'
+  else if (transportRequested) primary = 'transport'
+  else if (itineraryRequested) primary = 'itinerary'
+  else if (attractionRequested) primary = 'attraction'
+
+  return {
+    primary,
+    restaurantRequested,
+    attractionRequested,
+    transportRequested,
+    itineraryRequested,
+  }
+}
+
 function specialtyName(specialty, language) {
   return specialtyNames[specialty]?.[language] || specialty
 }
@@ -402,14 +515,33 @@ function attractionAnswer(text, language) {
   }
 }
 
+function conversationAnswer(language) {
+  return {
+    text: l(
+      language,
+      '你好！我是法国研学第一组的智能导游。你可以问我巴黎景点、研学行程或交通；需要用餐建议时，请明确告诉我想找的餐厅、菜系或每人预算。',
+      'Hello! I am Group 1’s smart Paris guide. Ask me about Paris attractions, study itineraries or transport. For dining suggestions, explicitly tell me the restaurant type, cuisine or per-person budget you need.',
+      'Bonjour ! Je suis le guide intelligent du groupe 1. Posez-moi vos questions sur les sites parisiens, les parcours d’étude ou les transports. Pour un repas, indiquez clairement le type de restaurant, la cuisine ou le budget par personne.',
+    ),
+    recommendations: [],
+    sources: [],
+  }
+}
+
 export function buildGuideContext(input) {
-  const text = input.toLowerCase()
+  const text = String(input || '').toLowerCase()
+  const intent = detectGuideIntent(text)
   return {
     reviewedOn: GUIDE_DATA_REVIEWED_ON,
-    relevantAttractions: rankAttractions(text).slice(0, 5),
-    relevantRestaurants: pickRestaurants(text),
+    intent,
+    relevantAttractions: intent.attractionRequested
+      ? rankAttractions(text).slice(0, 5)
+      : [],
+    relevantRestaurants: intent.restaurantRequested ? pickRestaurants(text) : [],
     rules: [
       '只使用提供的数据回答地点、餐厅和开放信息',
+      '只有 restaurantRequested 为 true 时才能提供具体餐厅、菜系、预算或用餐推荐',
+      '普通问候和一般对话只自然回答，不主动推荐景点或餐厅',
       '价格、开放时间和评分可能变化，必须提示用户查看官方来源',
       '不得编造实时拥挤度、营业时间或票价',
     ],
@@ -418,11 +550,12 @@ export function buildGuideContext(input) {
 
 export function getLocalGuideAnswer(input, language = 'zh') {
   const text = input.trim().toLowerCase()
+  const intent = detectGuideIntent(text)
   let answer
 
-  if (hasRestaurantIntent(text)) {
+  if (intent.primary === 'restaurant') {
     answer = restaurantAnswer(text, language)
-  } else if (containsAny(text, ['地铁', '公交', '交通', '车票', 'navigo', 'metro', 'transport', 'billet'])) {
+  } else if (intent.primary === 'transport') {
     answer = {
       text: l(
         language,
@@ -443,24 +576,12 @@ export function getLocalGuideAnswer(input, language = 'zh') {
         },
       ],
     }
-  } else if (
-    containsAny(text, [
-      '行程',
-      '路线',
-      '一天',
-      '三天',
-      '几天',
-      'plan',
-      'itinerary',
-      'day',
-      'itinéraire',
-      'parcours',
-      'jour',
-    ])
-  ) {
+  } else if (intent.primary === 'itinerary') {
     answer = itineraryAnswer(text, language)
-  } else {
+  } else if (intent.primary === 'attraction') {
     answer = attractionAnswer(text, language)
+  } else {
+    answer = conversationAnswer(language)
   }
 
   return {
