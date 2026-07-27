@@ -71,7 +71,7 @@ export default function HomePage() {
       <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-cyan-300/10 blur-3xl" />
 
       <section className="relative mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 px-5 py-10 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:py-14">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl lg:translate-y-4">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-3.5 py-2 text-[11px] font-black uppercase tracking-[0.12em] text-cyan-200 shadow-[0_10px_35px_rgba(0,0,0,0.16)] backdrop-blur">
             <Sparkles size={14} className="text-cyan-300" aria-hidden="true" />
             {tr(
@@ -130,19 +130,6 @@ export default function HomePage() {
               <ArrowRight size={17} className="text-paris-blue transition group-hover:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
-
-          <dl className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-white/20 rounded-2xl border border-white/20 bg-white/10 px-2 py-4 shadow-[0_12px_35px_rgba(13,45,75,0.12)] backdrop-blur">
-            {[
-              ['26', tr('餐厅资料', 'Restaurants', 'Restaurants')],
-              ['11', tr('餐饮分类', 'Categories', 'Catégories')],
-              [tr('站内', 'In-app', 'Intégré'), tr('步行导航', 'Walking routes', 'Itinéraires à pied')],
-            ].map(([value, label]) => (
-              <div key={label} className="px-3 text-center">
-                <dt className="text-xl font-black tracking-tight text-white sm:text-2xl">{value}</dt>
-                <dd className="mt-1 text-[10px] font-semibold text-white/45 sm:text-xs">{label}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
 
         <div className="relative mx-auto w-full max-w-xl lg:translate-x-2">
