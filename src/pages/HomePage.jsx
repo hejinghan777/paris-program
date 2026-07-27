@@ -52,16 +52,18 @@ export default function HomePage() {
   }, [refreshKey])
 
   const weatherPresentation = getWeatherPresentation(weather?.weatherCode, language)
+  const actionCardClass =
+    'group flex min-h-24 items-center gap-4 rounded-[1.4rem] border border-white/75 bg-white/90 p-4 text-left text-paris-navy shadow-[0_18px_45px_rgba(13,45,75,0.16)] backdrop-blur transition hover:-translate-y-1 hover:bg-white hover:shadow-[0_22px_55px_rgba(13,45,75,0.2)] focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#17446c]'
 
   return (
-    <div className="relative flex flex-1 flex-col overflow-x-hidden bg-[#07182f] text-white">
+    <div className="relative flex flex-1 flex-col overflow-x-hidden bg-[#17446c] text-white">
       <img
         src={`${import.meta.env.BASE_URL}hero-eiffel-tech.png`}
         alt=""
         aria-hidden="true"
         fetchPriority="high"
         decoding="async"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[68%_center]"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[68%_center] brightness-[1.18] contrast-[0.94] saturate-[0.88]"
       />
       <div className="home-hero-shade pointer-events-none absolute inset-0" />
       <div className="hero-grid pointer-events-none absolute inset-0 opacity-15" />
@@ -95,9 +97,9 @@ export default function HomePage() {
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <Link
               to="/chat"
-              className="group flex min-h-24 items-center gap-4 rounded-[1.4rem] bg-white p-4 text-left text-paris-navy shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition hover:-translate-y-1 hover:bg-cyan-50 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-paris-navy"
+              className={actionCardClass}
             >
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-paris-blue text-white shadow-[0_8px_22px_rgba(27,82,171,0.22)]">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#2367a6] text-white shadow-[0_8px_22px_rgba(27,82,171,0.2)]">
                 <Bot size={22} aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
@@ -112,24 +114,24 @@ export default function HomePage() {
             </Link>
             <Link
               to="/map"
-              className="group flex min-h-24 items-center gap-4 rounded-[1.4rem] border border-white/15 bg-[#0b213e]/75 p-4 text-left text-white shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur transition hover:-translate-y-1 hover:border-cyan-300/30 hover:bg-[#102a4b]/90 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-paris-navy"
+              className={actionCardClass}
             >
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-paris-navy text-white">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#2367a6] text-white shadow-[0_8px_22px_rgba(27,82,171,0.2)]">
                 <MapPinned size={22} aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-black">
                   {tr('打开站内地图', 'Open the map', 'Ouvrir la carte')}
                 </span>
-                <span className="mt-1 block text-[11px] leading-4 text-white/50">
+                <span className="mt-1 block text-[11px] leading-4 text-paris-ink/50">
                   {tr('筛选餐厅并开始步行导航', 'Filter places and start walking', 'Filtrez les lieux et commencez à marcher')}
                 </span>
               </span>
-              <ArrowRight size={17} className="text-cyan-300 transition group-hover:translate-x-1" aria-hidden="true" />
+              <ArrowRight size={17} className="text-paris-blue transition group-hover:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
 
-          <dl className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-black/15 px-2 py-4 backdrop-blur">
+          <dl className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-white/20 rounded-2xl border border-white/20 bg-white/10 px-2 py-4 shadow-[0_12px_35px_rgba(13,45,75,0.12)] backdrop-blur">
             {[
               ['26', tr('餐厅资料', 'Restaurants', 'Restaurants')],
               ['11', tr('餐饮分类', 'Categories', 'Catégories')],
@@ -144,9 +146,9 @@ export default function HomePage() {
         </div>
 
         <div className="relative mx-auto w-full max-w-xl lg:translate-x-2">
-          <div className="pointer-events-none absolute -inset-5 rounded-[2.8rem] border border-white/10 bg-[#70849c]/10 shadow-[0_35px_100px_rgba(0,0,0,0.24)] backdrop-blur-sm" />
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-[#c8d2dc]/10 p-2.5 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl">
-            <div className="rounded-[1.55rem] border border-white/10 bg-[#081a33]/90 p-5 text-white shadow-inner sm:p-6">
+          <div className="pointer-events-none absolute -inset-5 rounded-[2.8rem] border border-white/20 bg-[#b9d6eb]/15 shadow-[0_35px_100px_rgba(13,45,75,0.2)] backdrop-blur-sm" />
+          <div className="relative overflow-hidden rounded-[2rem] border border-white/30 bg-[#dcebf5]/18 p-2.5 shadow-[0_28px_80px_rgba(13,45,75,0.22)] backdrop-blur-xl">
+            <div className="rounded-[1.55rem] border border-white/15 bg-[#123b61]/88 p-5 text-white shadow-inner sm:p-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
@@ -269,7 +271,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="relative border-t border-white/10 bg-[#06152a]/80 px-5 py-3 text-center text-[11px] text-white/40 backdrop-blur">
+      <footer className="relative border-t border-white/15 bg-[#123b61]/72 px-5 py-3 text-center text-[11px] text-white/55 backdrop-blur">
         {tr(
           '地图数据 © OpenStreetMap contributors · 路线结果请结合现场交通与道路状况判断',
           'Map data © OpenStreetMap contributors · Check routes against current street conditions',

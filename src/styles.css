@@ -51,12 +51,12 @@ select {
   background:
     linear-gradient(
       90deg,
-      rgb(7 24 47 / 96%) 0%,
-      rgb(7 24 47 / 90%) 38%,
-      rgb(7 24 47 / 56%) 66%,
-      rgb(7 24 47 / 30%) 100%
+      rgb(18 59 97 / 88%) 0%,
+      rgb(18 65 104 / 76%) 38%,
+      rgb(28 83 124 / 42%) 66%,
+      rgb(40 103 143 / 16%) 100%
     ),
-    linear-gradient(0deg, rgb(7 24 47 / 52%), transparent 42%);
+    linear-gradient(0deg, rgb(15 50 82 / 34%), transparent 42%);
 }
 
 .chat-canvas,
@@ -68,7 +68,7 @@ select {
 
 @media (max-width: 1023px) {
   .home-hero-shade {
-    background: linear-gradient(90deg, rgb(7 24 47 / 96%), rgb(7 24 47 / 72%));
+    background: linear-gradient(90deg, rgb(18 59 97 / 92%), rgb(27 82 123 / 62%));
   }
 }
 
