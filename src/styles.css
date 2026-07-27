@@ -47,11 +47,29 @@ select {
   mask-image: linear-gradient(to bottom, black 10%, transparent 88%);
 }
 
+.home-hero-shade {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(7 24 47 / 96%) 0%,
+      rgb(7 24 47 / 90%) 38%,
+      rgb(7 24 47 / 56%) 66%,
+      rgb(7 24 47 / 30%) 100%
+    ),
+    linear-gradient(0deg, rgb(7 24 47 / 52%), transparent 42%);
+}
+
 .chat-canvas,
 .map-canvas {
   background-image:
     radial-gradient(circle at 8% 12%, rgb(27 82 171 / 7%), transparent 28rem),
     radial-gradient(circle at 92% 88%, rgb(34 211 238 / 7%), transparent 30rem);
+}
+
+@media (max-width: 1023px) {
+  .home-hero-shade {
+    background: linear-gradient(90deg, rgb(7 24 47 / 96%), rgb(7 24 47 / 72%));
+  }
 }
 
 .message-canvas {

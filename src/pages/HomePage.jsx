@@ -54,48 +54,57 @@ export default function HomePage() {
   const weatherPresentation = getWeatherPresentation(weather?.weatherCode, language)
 
   return (
-    <div className="relative flex flex-1 flex-col overflow-x-hidden bg-[#f4f6f8]">
-      <div className="hero-grid pointer-events-none absolute inset-0 opacity-35" />
-      <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-paris-blue/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-cyan-300/15 blur-3xl" />
+    <div className="relative flex flex-1 flex-col overflow-x-hidden bg-[#07182f] text-white">
+      <img
+        src={`${import.meta.env.BASE_URL}hero-eiffel-tech.png`}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        decoding="async"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[68%_center]"
+      />
+      <div className="home-hero-shade pointer-events-none absolute inset-0" />
+      <div className="hero-grid pointer-events-none absolute inset-0 opacity-15" />
+      <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-paris-blue/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-cyan-300/10 blur-3xl" />
 
       <section className="relative mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 px-5 py-10 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:py-14">
         <div className="max-w-2xl">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-paris-blue/10 bg-white/85 px-3.5 py-2 text-[11px] font-black uppercase tracking-[0.12em] text-paris-blue shadow-[0_8px_30px_rgba(12,29,57,0.06)] backdrop-blur">
-            <Sparkles size={14} className="text-paris-red" aria-hidden="true" />
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-3.5 py-2 text-[11px] font-black uppercase tracking-[0.12em] text-cyan-200 shadow-[0_10px_35px_rgba(0,0,0,0.16)] backdrop-blur">
+            <Sparkles size={14} className="text-cyan-300" aria-hidden="true" />
             {tr(
               '研学行程 · 智能推荐 · 实时定位',
               'Study routes · Smart picks · Live location',
               'Parcours d’étude · Conseils intelligents · Position',
             )}
           </div>
-          <h1 className="text-4xl font-black leading-[1.04] tracking-[-0.04em] text-paris-navy sm:text-5xl lg:text-[4rem]">
-            {tr('让巴黎研学的下一步', 'Make the next step in Paris', 'Rendez chaque étape à Paris')}
-            <span className="mt-2 block text-paris-blue">
-              {tr('更快，也更清楚。', 'clear and effortless.', 'simple et évidente.')}
+          <h1 className="text-4xl font-black leading-[1.04] tracking-[-0.04em] text-white sm:text-5xl lg:text-[4rem]">
+            {tr('让每一次巴黎探索，', 'Give every Paris discovery', 'Donnez à chaque découverte de Paris')}
+            <span className="mt-2 block text-cyan-300">
+              {tr('都有清晰的下一步。', 'a clear next step.', 'une prochaine étape claire.')}
             </span>
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-8 text-paris-ink/60 sm:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-8 text-white/65 sm:text-lg">
             {tr(
-              '在一个页面里完成提问、比较与导航。智能导游根据真实地点资料给出建议，地图把建议直接变成可以步行的路线。',
-              'Ask, compare and navigate in one place. The smart guide uses real place data, then the map turns each recommendation into a walkable route.',
-              'Posez une question, comparez et partez. Le guide utilise des données réelles, puis la carte transforme chaque conseil en itinéraire.',
+              '从个性化推荐到步行导航，智能导游结合真实地点数据，帮助你快速找到合适的餐厅与研学地点，并将选择转化为可以立即出发的路线。',
+              'From personal recommendations to walking navigation, the smart guide uses real place data to help you find the right restaurants and study locations, then turns your choice into a route ready to follow.',
+              'Des recommandations personnalisées à la navigation à pied, le guide utilise des données réelles pour trouver les bons restaurants et lieux d’étude, puis transforme votre choix en itinéraire prêt à suivre.',
             )}
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <Link
               to="/chat"
-              className="group flex min-h-24 items-center gap-4 rounded-[1.4rem] bg-paris-blue p-4 text-left text-white shadow-[0_18px_45px_rgba(27,82,171,0.24)] transition hover:-translate-y-1 hover:bg-[#16468f] focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
+              className="group flex min-h-24 items-center gap-4 rounded-[1.4rem] bg-white p-4 text-left text-paris-navy shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition hover:-translate-y-1 hover:bg-cyan-50 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-paris-navy"
             >
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/12">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-paris-blue text-white shadow-[0_8px_22px_rgba(27,82,171,0.22)]">
                 <Bot size={22} aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-black">
                   {tr('咨询智能导游', 'Ask the smart guide', 'Consulter le guide')}
                 </span>
-                <span className="mt-1 block text-[11px] leading-4 text-white/60">
+                <span className="mt-1 block text-[11px] leading-4 text-paris-ink/50">
                   {tr('告诉我预算、偏好或时间', 'Share your budget, preferences or time', 'Indiquez budget, préférences ou temps')}
                 </span>
               </span>
@@ -103,7 +112,7 @@ export default function HomePage() {
             </Link>
             <Link
               to="/map"
-              className="group flex min-h-24 items-center gap-4 rounded-[1.4rem] border border-paris-navy/8 bg-white/90 p-4 text-left text-paris-navy shadow-[0_16px_40px_rgba(12,29,57,0.08)] transition hover:-translate-y-1 hover:border-paris-blue/20 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
+              className="group flex min-h-24 items-center gap-4 rounded-[1.4rem] border border-white/15 bg-[#0b213e]/75 p-4 text-left text-white shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur transition hover:-translate-y-1 hover:border-cyan-300/30 hover:bg-[#102a4b]/90 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-paris-navy"
             >
               <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-paris-navy text-white">
                 <MapPinned size={22} aria-hidden="true" />
@@ -112,32 +121,32 @@ export default function HomePage() {
                 <span className="block text-sm font-black">
                   {tr('打开站内地图', 'Open the map', 'Ouvrir la carte')}
                 </span>
-                <span className="mt-1 block text-[11px] leading-4 text-paris-ink/45">
+                <span className="mt-1 block text-[11px] leading-4 text-white/50">
                   {tr('筛选餐厅并开始步行导航', 'Filter places and start walking', 'Filtrez les lieux et commencez à marcher')}
                 </span>
               </span>
-              <ArrowRight size={17} className="text-paris-blue transition group-hover:translate-x-1" aria-hidden="true" />
+              <ArrowRight size={17} className="text-cyan-300 transition group-hover:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
 
-          <dl className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-paris-navy/10 rounded-2xl border border-paris-navy/8 bg-white/60 px-2 py-4 backdrop-blur">
+          <dl className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-black/15 px-2 py-4 backdrop-blur">
             {[
               ['26', tr('餐厅资料', 'Restaurants', 'Restaurants')],
               ['11', tr('餐饮分类', 'Categories', 'Catégories')],
               [tr('站内', 'In-app', 'Intégré'), tr('步行导航', 'Walking routes', 'Itinéraires à pied')],
             ].map(([value, label]) => (
               <div key={label} className="px-3 text-center">
-                <dt className="text-xl font-black tracking-tight text-paris-navy sm:text-2xl">{value}</dt>
-                <dd className="mt-1 text-[10px] font-semibold text-paris-ink/45 sm:text-xs">{label}</dd>
+                <dt className="text-xl font-black tracking-tight text-white sm:text-2xl">{value}</dt>
+                <dd className="mt-1 text-[10px] font-semibold text-white/45 sm:text-xs">{label}</dd>
               </div>
             ))}
           </dl>
         </div>
 
         <div className="relative mx-auto w-full max-w-xl lg:translate-x-2">
-          <div className="pointer-events-none absolute -inset-5 rounded-[2.8rem] border border-white/70 bg-white/30 shadow-[0_35px_100px_rgba(12,29,57,0.12)] backdrop-blur-sm" />
-          <div className="relative overflow-hidden rounded-[2rem] border border-white bg-white/90 p-2.5 shadow-[0_28px_80px_rgba(12,29,57,0.16)] backdrop-blur-xl">
-            <div className="rounded-[1.55rem] bg-[#0a1e3b] p-5 text-white sm:p-6">
+          <div className="pointer-events-none absolute -inset-5 rounded-[2.8rem] border border-white/10 bg-[#70849c]/10 shadow-[0_35px_100px_rgba(0,0,0,0.24)] backdrop-blur-sm" />
+          <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-[#c8d2dc]/10 p-2.5 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+            <div className="rounded-[1.55rem] border border-white/10 bg-[#081a33]/90 p-5 text-white shadow-inner sm:p-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
@@ -224,15 +233,15 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 px-3 py-4 sm:px-5">
+            <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 px-3 py-4 text-white sm:px-5">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-[0_0_0_5px_rgba(16,185,129,0.12)]" />
               <div>
-                <p className="text-sm font-bold text-paris-navy">
+                <p className="text-sm font-bold text-white">
                   {weatherStatus === 'ready'
                     ? tr('巴黎天气预报已更新', 'Paris forecast updated', 'Prévisions de Paris actualisées')
                     : tr('巴黎天气预报', 'Paris weather forecast', 'Prévisions météo de Paris')}
                 </p>
-                <p className="text-xs text-paris-ink/50">
+                <p className="text-xs text-white/45">
                   {weather
                     ? tr(
                         `当地时间 ${weather.observedAt.slice(11, 16)} · 天气数据 `,
@@ -245,14 +254,14 @@ export default function HomePage() {
                       href="https://open-meteo.com/"
                       target="_blank"
                       rel="noreferrer"
-                      className="font-semibold text-paris-blue hover:underline"
+                      className="font-semibold text-cyan-300 hover:underline"
                     >
                       Open-Meteo
                     </a>
                   )}
                 </p>
               </div>
-              <span className="text-xs font-semibold text-emerald-700">
+              <span className="text-xs font-semibold text-emerald-300">
                 {weatherStatus === 'ready' ? tr('已更新', 'Updated', 'Actualisé') : '—'}
               </span>
             </div>
@@ -260,7 +269,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="relative border-t border-paris-navy/8 bg-white/55 px-5 py-3 text-center text-[11px] text-paris-ink/45">
+      <footer className="relative border-t border-white/10 bg-[#06152a]/80 px-5 py-3 text-center text-[11px] text-white/40 backdrop-blur">
         {tr(
           '地图数据 © OpenStreetMap contributors · 路线结果请结合现场交通与道路状况判断',
           'Map data © OpenStreetMap contributors · Check routes against current street conditions',
