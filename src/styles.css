@@ -47,6 +47,21 @@ select {
   mask-image: linear-gradient(to bottom, black 10%, transparent 88%);
 }
 
+.chat-canvas,
+.map-canvas {
+  background-image:
+    radial-gradient(circle at 8% 12%, rgb(27 82 171 / 7%), transparent 28rem),
+    radial-gradient(circle at 92% 88%, rgb(34 211 238 / 7%), transparent 30rem);
+}
+
+.message-canvas {
+  background-color: #f6f7f8;
+  background-image:
+    linear-gradient(rgb(12 29 57 / 2.5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(12 29 57 / 2.5%) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
 .thin-scrollbar {
   scrollbar-color: rgb(12 29 57 / 20%) transparent;
   scrollbar-width: thin;

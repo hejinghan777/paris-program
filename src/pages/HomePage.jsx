@@ -9,7 +9,6 @@ import {
   CloudSun,
   Droplets,
   LoaderCircle,
-  Layers3,
   MapPinned,
   RefreshCw,
   Snowflake,
@@ -55,78 +54,90 @@ export default function HomePage() {
   const weatherPresentation = getWeatherPresentation(weather?.weatherCode, language)
 
   return (
-    <div className="relative flex flex-1 flex-col overflow-hidden">
-      <div className="hero-grid pointer-events-none absolute inset-0 opacity-55" />
-      <div className="pointer-events-none absolute -left-32 top-16 h-80 w-80 rounded-full bg-paris-blue/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-paris-red/10 blur-3xl" />
+    <div className="relative flex flex-1 flex-col overflow-x-hidden bg-[#f4f6f8]">
+      <div className="hero-grid pointer-events-none absolute inset-0 opacity-35" />
+      <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-paris-blue/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-cyan-300/15 blur-3xl" />
 
-      <section className="relative mx-auto grid w-full max-w-7xl flex-1 items-center gap-10 px-5 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-16">
-        <div>
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-paris-blue/15 bg-white/80 px-3 py-1.5 text-xs font-semibold text-paris-blue shadow-sm backdrop-blur">
-            <Sparkles size={14} aria-hidden="true" />
+      <section className="relative mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 px-5 py-10 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:py-14">
+        <div className="max-w-2xl">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-paris-blue/10 bg-white/85 px-3.5 py-2 text-[11px] font-black uppercase tracking-[0.12em] text-paris-blue shadow-[0_8px_30px_rgba(12,29,57,0.06)] backdrop-blur">
+            <Sparkles size={14} className="text-paris-red" aria-hidden="true" />
             {tr(
               '研学行程 · 智能推荐 · 实时定位',
               'Study routes · Smart picks · Live location',
               'Parcours d’étude · Conseils intelligents · Position',
             )}
           </div>
-          <h1 className="max-w-3xl text-4xl font-black leading-[1.08] tracking-tight text-paris-navy sm:text-5xl lg:text-6xl">
-            {tr('法国研学第一组', 'France Study Tour', 'Voyage d’étude en France')}
+          <h1 className="text-4xl font-black leading-[1.04] tracking-[-0.04em] text-paris-navy sm:text-5xl lg:text-[4rem]">
+            {tr('让巴黎研学的下一步', 'Make the next step in Paris', 'Rendez chaque étape à Paris')}
             <span className="mt-2 block text-paris-blue">
-              {tr('导游地图', 'Group 1 Guide Map', 'Carte-guide du groupe 1')}
+              {tr('更快，也更清楚。', 'clear and effortless.', 'simple et évidente.')}
             </span>
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-paris-ink/65 sm:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-8 text-paris-ink/60 sm:text-lg">
             {tr(
-              '一个为巴黎研学行程设计的站内工具：查看餐厅、获取当前位置、规划步行路线，并根据真实地点资料生成更贴合需求的参观建议。',
-              'A practical tool for our Paris study tour: explore restaurants, locate yourself, follow walking routes and receive recommendations based on real place data.',
-              'Un outil conçu pour notre voyage d’étude à Paris : restaurants, géolocalisation, itinéraires à pied et recommandations fondées sur des données réelles.',
+              '在一个页面里完成提问、比较与导航。智能导游根据真实地点资料给出建议，地图把建议直接变成可以步行的路线。',
+              'Ask, compare and navigate in one place. The smart guide uses real place data, then the map turns each recommendation into a walkable route.',
+              'Posez une question, comparez et partez. Le guide utilise des données réelles, puis la carte transforme chaque conseil en itinéraire.',
             )}
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Link
-              to="/map"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-paris-blue px-5 py-3.5 text-sm font-bold text-white shadow-[0_14px_32px_rgba(27,82,171,0.24)] transition hover:-translate-y-0.5 hover:bg-[#16468f] focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
-            >
-              <MapPinned size={18} aria-hidden="true" />
-              {tr('打开站内地图', 'Open the map', 'Ouvrir la carte')}
-              <ArrowRight size={16} aria-hidden="true" />
-            </Link>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <Link
               to="/chat"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-paris-navy/10 bg-white px-5 py-3.5 text-sm font-bold text-paris-navy shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
+              className="group flex min-h-24 items-center gap-4 rounded-[1.4rem] bg-paris-blue p-4 text-left text-white shadow-[0_18px_45px_rgba(27,82,171,0.24)] transition hover:-translate-y-1 hover:bg-[#16468f] focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
             >
-              <Bot size={18} aria-hidden="true" />
-              {tr('咨询智能导游', 'Ask the smart guide', 'Consulter le guide')}
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/12">
+                <Bot size={22} aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-black">
+                  {tr('咨询智能导游', 'Ask the smart guide', 'Consulter le guide')}
+                </span>
+                <span className="mt-1 block text-[11px] leading-4 text-white/60">
+                  {tr('告诉我预算、偏好或时间', 'Share your budget, preferences or time', 'Indiquez budget, préférences ou temps')}
+                </span>
+              </span>
+              <ArrowRight size={17} className="transition group-hover:translate-x-1" aria-hidden="true" />
             </Link>
             <Link
-              to="/design"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-bold text-paris-blue transition hover:bg-white/70 focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
+              to="/map"
+              className="group flex min-h-24 items-center gap-4 rounded-[1.4rem] border border-paris-navy/8 bg-white/90 p-4 text-left text-paris-navy shadow-[0_16px_40px_rgba(12,29,57,0.08)] transition hover:-translate-y-1 hover:border-paris-blue/20 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
             >
-              <Layers3 size={18} aria-hidden="true" />
-              {tr('了解项目设计', 'How we designed it', 'Voir la conception')}
-              <ArrowRight size={16} aria-hidden="true" />
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-paris-navy text-white">
+                <MapPinned size={22} aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-black">
+                  {tr('打开站内地图', 'Open the map', 'Ouvrir la carte')}
+                </span>
+                <span className="mt-1 block text-[11px] leading-4 text-paris-ink/45">
+                  {tr('筛选餐厅并开始步行导航', 'Filter places and start walking', 'Filtrez les lieux et commencez à marcher')}
+                </span>
+              </span>
+              <ArrowRight size={17} className="text-paris-blue transition group-hover:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
 
-          <dl className="mt-10 grid max-w-xl grid-cols-3 gap-3">
+          <dl className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-paris-navy/10 rounded-2xl border border-paris-navy/8 bg-white/60 px-2 py-4 backdrop-blur">
             {[
               ['26', tr('餐厅资料', 'Restaurants', 'Restaurants')],
               ['11', tr('餐饮分类', 'Categories', 'Catégories')],
               [tr('站内', 'In-app', 'Intégré'), tr('步行导航', 'Walking routes', 'Itinéraires à pied')],
             ].map(([value, label]) => (
-              <div key={label} className="rounded-2xl border border-paris-navy/8 bg-white/70 px-3 py-4 backdrop-blur">
-                <dt className="text-xl font-black text-paris-navy sm:text-2xl">{value}</dt>
-                <dd className="mt-1 text-xs text-paris-ink/55">{label}</dd>
+              <div key={label} className="px-3 text-center">
+                <dt className="text-xl font-black tracking-tight text-paris-navy sm:text-2xl">{value}</dt>
+                <dd className="mt-1 text-[10px] font-semibold text-paris-ink/45 sm:text-xs">{label}</dd>
               </div>
             ))}
           </dl>
         </div>
 
-        <div className="relative mx-auto w-full max-w-xl">
-          <div className="overflow-hidden rounded-[2rem] border border-white/80 bg-white/85 p-3 shadow-[0_28px_80px_rgba(12,29,57,0.18)] backdrop-blur">
-            <div className="rounded-[1.45rem] bg-paris-navy p-5 text-white sm:p-6">
+        <div className="relative mx-auto w-full max-w-xl lg:translate-x-2">
+          <div className="pointer-events-none absolute -inset-5 rounded-[2.8rem] border border-white/70 bg-white/30 shadow-[0_35px_100px_rgba(12,29,57,0.12)] backdrop-blur-sm" />
+          <div className="relative overflow-hidden rounded-[2rem] border border-white bg-white/90 p-2.5 shadow-[0_28px_80px_rgba(12,29,57,0.16)] backdrop-blur-xl">
+            <div className="rounded-[1.55rem] bg-[#0a1e3b] p-5 text-white sm:p-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
@@ -250,17 +261,11 @@ export default function HomePage() {
       </section>
 
       <footer className="relative border-t border-paris-navy/8 bg-white/55 px-5 py-3 text-center text-[11px] text-paris-ink/45">
-        <span>
-          {tr(
-            '地图数据 © OpenStreetMap contributors · 路线结果请结合现场交通与道路状况判断',
-            'Map data © OpenStreetMap contributors · Check routes against current street conditions',
-            'Données cartographiques © contributeurs OpenStreetMap · Vérifiez les conditions sur place',
-          )}
-        </span>
-        <span aria-hidden="true"> · </span>
-        <Link to="/design" className="font-bold text-paris-blue hover:underline">
-          {tr('查看项目架构与设计过程', 'View architecture and design process', 'Voir l’architecture et le processus')}
-        </Link>
+        {tr(
+          '地图数据 © OpenStreetMap contributors · 路线结果请结合现场交通与道路状况判断',
+          'Map data © OpenStreetMap contributors · Check routes against current street conditions',
+          'Données cartographiques © contributeurs OpenStreetMap · Vérifiez les conditions sur place',
+        )}
       </footer>
     </div>
   )

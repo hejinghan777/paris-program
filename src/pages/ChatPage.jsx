@@ -100,10 +100,10 @@ function Message({ message }) {
       </div>
       <div className={`min-w-0 max-w-[88%] sm:max-w-[82%] ${isUser ? 'text-right' : ''}`}>
         <div
-          className={`inline-block rounded-2xl px-4 py-3 text-left text-sm leading-7 shadow-sm ${
-            isUser
-              ? 'rounded-tr-sm bg-paris-blue text-white'
-              : 'rounded-tl-sm border border-paris-navy/8 bg-white text-paris-ink'
+        className={`inline-block rounded-[1.2rem] px-4 py-3 text-left text-sm leading-7 ${
+          isUser
+              ? 'rounded-tr-sm bg-paris-blue text-white shadow-[0_10px_30px_rgba(27,82,171,0.18)]'
+              : 'rounded-tl-sm border border-paris-navy/8 bg-white text-paris-ink shadow-[0_10px_30px_rgba(12,29,57,0.06)]'
           }`}
         >
           <p className="whitespace-pre-line">{message.text}</p>
@@ -236,16 +236,17 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 bg-[#eef1f5]">
-      <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 overflow-hidden bg-white shadow-card lg:my-5 lg:rounded-[1.75rem] lg:border lg:border-paris-navy/8">
-        <aside className="hidden w-72 shrink-0 flex-col bg-paris-navy p-5 text-white md:flex">
-          <div className="grid h-11 w-11 place-items-center rounded-2xl bg-paris-blue">
+    <div className="chat-canvas flex min-h-0 flex-1 bg-[#f2f5f7]">
+      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 overflow-hidden bg-white shadow-[0_28px_90px_rgba(12,29,57,0.12)] lg:my-5 lg:rounded-[2rem] lg:border lg:border-white">
+        <aside className="relative hidden w-[300px] shrink-0 flex-col overflow-hidden bg-[#081a33] p-6 text-white md:flex">
+          <div className="pointer-events-none absolute -left-24 bottom-16 h-64 w-64 rounded-full bg-paris-blue/25 blur-3xl" />
+          <div className="relative grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-paris-blue shadow-[0_12px_35px_rgba(27,82,171,0.3)]">
             <Sparkles size={22} aria-hidden="true" />
           </div>
-          <h1 className="mt-5 text-2xl font-black">
+          <h1 className="relative mt-6 text-2xl font-black tracking-tight">
             {tr('智能研学导游', 'Smart study guide', 'Guide d’étude intelligent')}
           </h1>
-          <p className="mt-2 text-sm leading-6 text-white/55">
+          <p className="relative mt-2 text-sm leading-6 text-white/55">
             {tr(
               '语言模型会直接回答你的问题，并按需融合实时天气、研学地点或餐厅资料。',
               'The language model answers directly and adds live weather, study-place or restaurant data only when relevant.',
@@ -253,8 +254,8 @@ export default function ChatPage() {
             )}
           </p>
 
-          <div className="mt-7 space-y-2">
-            <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs">
+          <div className="relative mt-8 space-y-2">
+            <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-3 text-xs">
               <Database size={15} className="text-[#8db7ff]" aria-hidden="true" />
               {tr(
                 '26 家餐厅 + 8 个研学地点',
@@ -262,7 +263,7 @@ export default function ChatPage() {
                 '26 restaurants + 8 lieux d’étude',
               )}
             </div>
-            <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs">
+            <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-3 text-xs">
               <ShieldCheck size={15} className="text-emerald-400" aria-hidden="true" />
               {tr(
                 '重要信息附官方来源',
@@ -272,7 +273,7 @@ export default function ChatPage() {
             </div>
           </div>
 
-          <div className="mt-auto rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="relative mt-auto rounded-2xl border border-white/10 bg-white/[0.06] p-4 backdrop-blur">
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">
               {tr('推荐引擎', 'Recommendation engine', 'Moteur de recommandation')}
             </p>
@@ -298,8 +299,8 @@ export default function ChatPage() {
           </div>
         </aside>
 
-        <section className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="flex items-center justify-between gap-3 border-b border-paris-navy/8 px-4 py-3 sm:px-5">
+        <section className="flex min-h-0 min-w-0 flex-1 flex-col bg-white">
+          <div className="flex items-center justify-between gap-3 border-b border-paris-navy/8 bg-white/90 px-4 py-3.5 backdrop-blur sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
               <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-paris-navy text-white md:hidden">
                 <Bot size={17} aria-hidden="true" />
@@ -320,14 +321,18 @@ export default function ChatPage() {
             </div>
             <Link
               to="/map"
-              className="inline-flex items-center gap-1.5 rounded-full bg-paris-blue/8 px-3 py-1.5 text-[11px] font-bold text-paris-blue"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-paris-blue/10 bg-paris-blue/[0.06] px-3 py-2 text-[11px] font-black text-paris-blue transition hover:border-paris-blue/20 hover:bg-paris-blue/10"
             >
               <MapPin size={13} aria-hidden="true" />
               {tr('查看地图', 'View map', 'Voir la carte')}
             </Link>
           </div>
 
-          <div className="thin-scrollbar min-h-0 flex-1 space-y-5 overflow-y-auto bg-paris-cream/45 p-4 sm:p-6" aria-live="polite">
+          <div
+            className="thin-scrollbar message-canvas min-h-0 flex-1 space-y-5 overflow-y-auto p-4 sm:p-6 lg:p-8"
+            aria-live="polite"
+            aria-busy={isReplying}
+          >
             {messages.map((message, index) => (
               <Message key={`${message.role}-${index}`} message={message} />
             ))}
@@ -336,7 +341,7 @@ export default function ChatPage() {
                 <div className="grid h-8 w-8 place-items-center rounded-xl bg-paris-navy text-white">
                   <Bot size={16} aria-hidden="true" />
                 </div>
-                <div className="flex items-center gap-2 rounded-2xl rounded-tl-sm border border-paris-navy/8 bg-white px-4 py-3 text-xs text-paris-ink/45 shadow-sm">
+                <div role="status" className="flex items-center gap-2 rounded-2xl rounded-tl-sm border border-paris-navy/8 bg-white px-4 py-3 text-xs text-paris-ink/45 shadow-[0_10px_30px_rgba(12,29,57,0.06)]">
                   <LoaderCircle size={14} className="animate-spin" aria-hidden="true" />
                   {tr(
                     '语言模型正在理解问题并生成回答…',
@@ -349,7 +354,7 @@ export default function ChatPage() {
             <div ref={endRef} />
           </div>
 
-          <div className="border-t border-paris-navy/8 bg-white p-3 sm:p-4">
+          <div className="border-t border-paris-navy/8 bg-white/95 p-3 backdrop-blur sm:p-4">
             <div className="thin-scrollbar mb-3 flex gap-2 overflow-x-auto">
               {quickPrompts.map((prompt) => (
                 <button
@@ -357,7 +362,7 @@ export default function ChatPage() {
                   type="button"
                   onClick={() => sendMessage(prompt)}
                   disabled={isReplying}
-                  className="shrink-0 rounded-full border border-paris-navy/10 bg-white px-3 py-1.5 text-[11px] font-semibold text-paris-ink/60 transition hover:border-paris-blue/30 hover:text-paris-blue disabled:opacity-50"
+                  className="shrink-0 rounded-full border border-paris-navy/8 bg-paris-cream/65 px-3 py-2 text-[11px] font-bold text-paris-ink/55 transition hover:-translate-y-0.5 hover:border-paris-blue/25 hover:bg-white hover:text-paris-blue disabled:opacity-50"
                 >
                   {prompt}
                 </button>
@@ -383,13 +388,13 @@ export default function ChatPage() {
                   'Ask anything; for restaurants, include a cuisine and per-person budget',
                   'Posez toute question ; pour un restaurant, indiquez la cuisine et le budget',
                 )}
-                className="max-h-28 min-h-[44px] min-w-0 flex-1 resize-none rounded-2xl border border-paris-navy/10 bg-paris-cream/55 px-4 py-3 text-sm outline-none transition placeholder:text-paris-ink/35 focus:border-paris-blue focus:ring-2 focus:ring-paris-blue/10"
+                className="max-h-28 min-h-[48px] min-w-0 flex-1 resize-none rounded-[1.2rem] border border-paris-navy/10 bg-[#f5f7f9] px-4 py-3.5 text-sm outline-none transition placeholder:text-paris-ink/35 focus:border-paris-blue focus:bg-white focus:ring-4 focus:ring-paris-blue/8"
                 disabled={isReplying}
               />
               <button
                 type="submit"
                 disabled={isReplying || !value.trim()}
-                className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-paris-blue text-white shadow-[0_8px_20px_rgba(27,82,171,0.2)] transition hover:bg-[#16468f] disabled:cursor-not-allowed disabled:opacity-40"
+                className="grid h-12 w-12 shrink-0 place-items-center rounded-[1.15rem] bg-paris-blue text-white shadow-[0_10px_25px_rgba(27,82,171,0.22)] transition hover:-translate-y-0.5 hover:bg-[#16468f] disabled:cursor-not-allowed disabled:opacity-40"
                 aria-label={tr('发送问题', 'Send question', 'Envoyer la question')}
               >
                 <Send size={17} aria-hidden="true" />

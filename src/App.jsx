@@ -5,7 +5,6 @@ import HomePage from './pages/HomePage'
 
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const ChatPage = lazy(() => import('./pages/ChatPage'))
-const DesignPage = lazy(() => import('./pages/DesignPage'))
 const MapPage = lazy(() => import('./pages/MapPage'))
 
 export default function App() {
@@ -34,7 +33,6 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/map" element={<MapPage />} />
-            <Route path="/design" element={<DesignPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

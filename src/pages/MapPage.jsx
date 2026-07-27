@@ -96,16 +96,16 @@ function RestaurantCard({ restaurant, selected, distance, onSelect }) {
     <button
       type="button"
       onClick={() => onSelect(restaurant)}
-      className={`w-full rounded-2xl border p-3 text-left transition ${
+      className={`w-full rounded-[1.25rem] border p-3.5 text-left transition ${
         selected
-          ? 'border-paris-blue bg-paris-blue/[0.06] shadow-sm'
-          : 'border-paris-navy/8 bg-white hover:-translate-y-0.5 hover:border-paris-blue/30 hover:shadow-md'
+          ? 'border-paris-blue bg-paris-blue/[0.06] shadow-[0_12px_30px_rgba(27,82,171,0.12)]'
+          : 'border-paris-navy/8 bg-white hover:-translate-y-0.5 hover:border-paris-blue/25 hover:shadow-[0_12px_30px_rgba(12,29,57,0.08)]'
       }`}
       aria-pressed={selected}
     >
       <span className="flex items-start gap-3">
         <span
-          className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-xs font-black ${
+          className={`grid h-10 w-10 shrink-0 place-items-center rounded-[0.9rem] text-xs font-black ${
             selected ? 'bg-paris-blue text-white' : 'bg-paris-navy/[0.06] text-paris-navy'
           }`}
         >
@@ -148,7 +148,7 @@ function SelectedRestaurant({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="border-b border-paris-navy/8 p-4">
+      <div className="border-b border-paris-navy/8 bg-white p-4 sm:p-5">
         <button
           type="button"
           onClick={onBack}
@@ -164,7 +164,7 @@ function SelectedRestaurant({
             </p>
             <h2 className="mt-1 text-xl font-black leading-tight text-paris-navy">{restaurant.name}</h2>
           </div>
-          <span className="rounded-lg bg-paris-navy/[0.06] px-2.5 py-1 text-sm font-black text-paris-navy">
+            <span className="rounded-xl border border-paris-navy/8 bg-paris-navy/[0.04] px-2.5 py-1.5 text-sm font-black text-paris-navy">
             {restaurant.price}
           </span>
         </div>
@@ -228,17 +228,17 @@ function SelectedRestaurant({
         </p>
       </div>
 
-      <div className="border-b border-paris-navy/8 p-4">
+      <div className="border-b border-paris-navy/8 bg-[#f7f8fa] p-4 sm:p-5">
         {route ? (
           <div className="grid grid-cols-2 gap-2">
-            <div className="rounded-xl bg-paris-blue px-3 py-3 text-white">
+            <div className="rounded-2xl bg-paris-blue px-3.5 py-3.5 text-white shadow-[0_10px_25px_rgba(27,82,171,0.18)]">
               <span className="flex items-center gap-1.5 text-[11px] text-white/65">
                 <Footprints size={13} aria-hidden="true" />
                 {tr('步行距离', 'Walking distance', 'Distance à pied')}
               </span>
               <strong className="mt-1 block text-lg">{formatDistance(route.distanceMeters, language)}</strong>
             </div>
-            <div className="rounded-xl bg-paris-navy px-3 py-3 text-white">
+            <div className="rounded-2xl bg-paris-navy px-3.5 py-3.5 text-white shadow-[0_10px_25px_rgba(12,29,57,0.16)]">
               <span className="flex items-center gap-1.5 text-[11px] text-white/65">
                 <Clock3 size={13} aria-hidden="true" />
                 {tr('预计用时', 'Estimated time', 'Temps estimé')}
@@ -253,7 +253,7 @@ function SelectedRestaurant({
             type="button"
             onClick={onNavigate}
             disabled={routeStatus === 'loading'}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-paris-blue px-4 py-3 text-sm font-bold text-white shadow-[0_10px_24px_rgba(27,82,171,0.2)] transition hover:bg-[#16468f] disabled:cursor-wait disabled:opacity-65"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-paris-blue px-4 py-3.5 text-sm font-black text-white shadow-[0_12px_28px_rgba(27,82,171,0.22)] transition hover:-translate-y-0.5 hover:bg-[#16468f] disabled:cursor-wait disabled:opacity-65"
           >
             {routeStatus === 'loading' ? (
               <LoaderCircle className="animate-spin" size={17} aria-hidden="true" />
@@ -270,7 +270,7 @@ function SelectedRestaurant({
           <button
             type="button"
             onClick={onStop}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-paris-navy/10 px-4 py-2.5 text-xs font-bold text-paris-navy hover:bg-paris-navy/[0.04]"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-2xl border border-paris-navy/10 bg-white px-4 py-2.5 text-xs font-bold text-paris-navy transition hover:bg-paris-navy/[0.04]"
           >
             <X size={14} aria-hidden="true" />
             {tr('结束导航', 'Stop navigation', 'Arrêter la navigation')}
@@ -490,11 +490,11 @@ export default function MapPage() {
   const handleMapUnavailable = useCallback(() => setMapEngine('open'), [])
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-[#eef1f5]">
-      <div className="border-b border-paris-navy/8 bg-white px-4 py-3 sm:px-6">
+    <div className="map-canvas flex min-h-0 flex-1 flex-col bg-[#f1f4f7]">
+      <div className="border-b border-paris-navy/8 bg-white/90 px-4 py-3.5 shadow-[0_8px_30px_rgba(12,29,57,0.05)] backdrop-blur sm:px-6">
         <div className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-base font-black text-paris-navy">
+            <p className="text-base font-black tracking-tight text-paris-navy">
               {tr('巴黎餐厅与步行导航', 'Paris restaurants & walking routes', 'Restaurants et itinéraires à Paris')}
             </p>
             <p className="text-[11px] text-paris-ink/50">
@@ -506,7 +506,7 @@ export default function MapPage() {
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-paris-navy/[0.05] px-3 py-1.5 text-[11px] font-semibold text-paris-ink/60">
+            <span className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-paris-navy/8 bg-paris-navy/[0.035] px-3 text-[11px] font-bold text-paris-ink/55">
               <Map size={13} aria-hidden="true" />
               {mapEngine === 'google'
                 ? tr('Google Maps 已接入', 'Google Maps connected', 'Google Maps connecté')
@@ -516,7 +516,7 @@ export default function MapPage() {
               type="button"
               onClick={() => locateMe().catch(() => {})}
               disabled={locationStatus === 'loading'}
-              className="inline-flex items-center gap-1.5 rounded-full bg-paris-blue px-3 py-1.5 text-[11px] font-bold text-white disabled:opacity-60"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl bg-paris-blue px-3.5 text-[11px] font-black text-white shadow-[0_8px_22px_rgba(27,82,171,0.2)] transition hover:-translate-y-0.5 hover:bg-[#16468f] disabled:opacity-60"
             >
               {locationStatus === 'loading' ? (
                 <LoaderCircle size={13} className="animate-spin" aria-hidden="true" />
@@ -540,8 +540,8 @@ export default function MapPage() {
         )}
       </div>
 
-      <div className="mx-auto flex min-h-0 w-full max-w-[1500px] flex-1 flex-col overflow-hidden md:flex-row">
-        <aside className="order-2 flex max-h-[49vh] min-h-0 w-full flex-col border-t border-paris-navy/10 bg-[#f8f8f6] md:order-1 md:max-h-none md:w-[410px] md:border-r md:border-t-0">
+      <div className="mx-auto flex min-h-0 w-full max-w-[1500px] flex-1 flex-col overflow-hidden md:flex-row lg:mb-5 lg:mt-4 lg:rounded-[1.75rem] lg:border lg:border-white lg:shadow-[0_24px_70px_rgba(12,29,57,0.11)]">
+        <aside className="order-2 flex max-h-[49vh] min-h-0 w-full flex-col border-t border-paris-navy/10 bg-[#f5f7f8] md:order-1 md:max-h-none md:w-[410px] md:border-r md:border-t-0">
           {selected ? (
             <SelectedRestaurant
               restaurant={selected}
@@ -555,7 +555,7 @@ export default function MapPage() {
             />
           ) : (
             <>
-              <div className="space-y-3 border-b border-paris-navy/8 bg-white p-4">
+              <div className="space-y-3.5 border-b border-paris-navy/8 bg-white p-4 sm:p-5">
                 <div className="relative">
                   <Search
                     size={17}
@@ -574,7 +574,7 @@ export default function MapPage() {
                       'Search restaurants or cuisines',
                       'Rechercher un restaurant ou une cuisine',
                     )}
-                    className="w-full rounded-xl border border-paris-navy/10 bg-paris-cream/60 py-2.5 pl-10 pr-3 text-sm outline-none transition placeholder:text-paris-ink/35 focus:border-paris-blue focus:ring-2 focus:ring-paris-blue/10"
+                    className="h-12 w-full rounded-2xl border border-paris-navy/8 bg-[#f4f6f8] pl-10 pr-3 text-sm outline-none transition placeholder:text-paris-ink/35 focus:border-paris-blue focus:bg-white focus:ring-4 focus:ring-paris-blue/8"
                   />
                 </div>
 
@@ -588,10 +588,10 @@ export default function MapPage() {
                       type="button"
                       onClick={() => setActiveSpecialty(specialty)}
                       aria-pressed={activeSpecialty === specialty}
-                      className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-bold transition ${
+                      className={`shrink-0 rounded-full px-3 py-2 text-[11px] font-bold transition ${
                         activeSpecialty === specialty
-                          ? 'bg-paris-navy text-white'
-                          : 'bg-paris-navy/[0.05] text-paris-ink/60 hover:bg-paris-navy/10'
+                          ? 'bg-paris-navy text-white shadow-[0_6px_18px_rgba(12,29,57,0.16)]'
+                          : 'border border-paris-navy/8 bg-white text-paris-ink/55 hover:border-paris-blue/20 hover:text-paris-blue'
                       }`}
                     >
                       {specialtyLabels[language][specialty]}
@@ -614,7 +614,7 @@ export default function MapPage() {
                     <select
                       value={sortBy}
                       onChange={(event) => setSortBy(event.target.value)}
-                      className="appearance-none rounded-lg border border-paris-navy/10 bg-white py-1.5 pl-2.5 pr-7 text-[11px] font-semibold text-paris-navy outline-none focus:border-paris-blue"
+                      className="appearance-none rounded-xl border border-paris-navy/8 bg-white py-2 pl-3 pr-8 text-[11px] font-bold text-paris-navy outline-none focus:border-paris-blue"
                     >
                       <option value="recommended">{tr('默认排序', 'Default order', 'Tri par défaut')}</option>
                       <option value="distance">{tr('距离最近', 'Nearest', 'Les plus proches')}</option>
@@ -630,7 +630,7 @@ export default function MapPage() {
                 </div>
               </div>
 
-              <div className="thin-scrollbar min-h-0 flex-1 space-y-2 overflow-y-auto p-3">
+              <div className="thin-scrollbar min-h-0 flex-1 space-y-2.5 overflow-y-auto p-3.5">
                 {visibleRestaurants.map((restaurant) => (
                   <RestaurantCard
                     key={restaurant.id}
@@ -669,7 +669,7 @@ export default function MapPage() {
         </aside>
 
         <section
-          className="relative order-1 min-h-[43vh] min-w-0 flex-1 md:order-2 md:min-h-0"
+          className="relative order-1 min-h-[43vh] min-w-0 flex-1 bg-[#e7ebef] md:order-2 md:min-h-0"
           aria-label={tr('站内导航地图', 'In-app navigation map', 'Carte de navigation intégrée')}
         >
           {mapEngine === 'google' ? (
@@ -691,7 +691,7 @@ export default function MapPage() {
               route={route}
             />
           )}
-          <div className="pointer-events-none absolute bottom-4 left-1/2 z-[500] -translate-x-1/2 rounded-full border border-white/70 bg-paris-navy/90 px-3 py-1.5 text-[10px] font-semibold text-white shadow-lg backdrop-blur">
+          <div className="pointer-events-none absolute bottom-4 left-1/2 z-[500] -translate-x-1/2 rounded-full border border-white/20 bg-paris-navy/90 px-3.5 py-2 text-[10px] font-bold text-white shadow-[0_10px_30px_rgba(12,29,57,0.25)] backdrop-blur">
             <span className="inline-flex items-center gap-1.5">
               <LocateFixed size={12} aria-hidden="true" />
               {tr(
