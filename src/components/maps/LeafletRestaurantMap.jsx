@@ -111,7 +111,7 @@ export default function LeafletRestaurantMap({
       {route && (
         <Polyline
           positions={route.coordinates}
-          pathOptions={{ color: '#1b52ab', weight: 6, opacity: 0.88 }}
+          pathOptions={{ color: '#2367a6', weight: 6, opacity: 0.88 }}
         />
       )}
       <MapEffects selected={selected} userLocation={userLocation} route={route} />

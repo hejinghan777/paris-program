@@ -5,12 +5,12 @@ export default {
     extend: {
       colors: {
         paris: {
-          navy: '#0c1d39',
-          blue: '#1b52ab',
+          navy: '#123b61',
+          blue: '#2367a6',
           red: '#e6404f',
           gold: '#bf8c2c',
-          cream: '#f6f5f0',
-          ink: '#17243a',
+          cream: '#eef4f7',
+          ink: '#193754',
         },
       },
       boxShadow: {

@@ -217,7 +217,7 @@ export default function RecommendationRouteMap({ recommendations }) {
           {route && (
             <Polyline
               positions={route.coordinates}
-              pathOptions={{ color: '#1b52ab', weight: 5, opacity: 0.88 }}
+              pathOptions={{ color: '#2367a6', weight: 5, opacity: 0.88 }}
             />
           )}
           <FitRecommendationRoute

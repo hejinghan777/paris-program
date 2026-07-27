@@ -490,8 +490,8 @@ export default function MapPage() {
   const handleMapUnavailable = useCallback(() => setMapEngine('open'), [])
 
   return (
-    <div className="map-canvas flex min-h-0 flex-1 flex-col bg-[#f1f4f7]">
-      <div className="border-b border-paris-navy/8 bg-white/90 px-4 py-3.5 shadow-[0_8px_30px_rgba(12,29,57,0.05)] backdrop-blur sm:px-6">
+    <div className="map-canvas flex min-h-0 flex-1 flex-col">
+      <div className="border-b border-white/25 bg-[#edf5fa]/95 px-4 py-3.5 shadow-[0_8px_30px_rgba(13,45,75,0.16)] backdrop-blur sm:px-6">
         <div className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-base font-black tracking-tight text-paris-navy">
@@ -540,8 +540,8 @@ export default function MapPage() {
         )}
       </div>
 
-      <div className="mx-auto flex min-h-0 w-full max-w-[1500px] flex-1 flex-col overflow-hidden md:flex-row lg:mb-5 lg:mt-4 lg:rounded-[1.75rem] lg:border lg:border-white lg:shadow-[0_24px_70px_rgba(12,29,57,0.11)]">
-        <aside className="order-2 flex max-h-[49vh] min-h-0 w-full flex-col border-t border-paris-navy/10 bg-[#f5f7f8] md:order-1 md:max-h-none md:w-[410px] md:border-r md:border-t-0">
+      <div className="mx-auto flex min-h-0 w-full max-w-[1500px] flex-1 flex-col overflow-hidden bg-[#eef5f9] md:flex-row lg:mb-5 lg:mt-4 lg:rounded-[1.75rem] lg:border lg:border-white/60 lg:shadow-[0_24px_70px_rgba(13,45,75,0.22)]">
+        <aside className="order-2 flex max-h-[49vh] min-h-0 w-full flex-col border-t border-paris-navy/10 bg-[#e7f0f6] md:order-1 md:max-h-none md:w-[410px] md:border-r md:border-t-0">
           {selected ? (
             <SelectedRestaurant
               restaurant={selected}

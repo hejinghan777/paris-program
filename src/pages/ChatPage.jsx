@@ -236,9 +236,9 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="chat-canvas flex min-h-0 flex-1 bg-[#f2f5f7]">
-      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 overflow-hidden bg-white shadow-[0_28px_90px_rgba(12,29,57,0.12)] lg:my-5 lg:rounded-[2rem] lg:border lg:border-white">
-        <aside className="relative hidden w-[300px] shrink-0 flex-col overflow-hidden bg-[#081a33] p-6 text-white md:flex">
+    <div className="chat-canvas flex min-h-0 flex-1">
+      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 overflow-hidden bg-[#f3f8fb] shadow-[0_28px_90px_rgba(13,45,75,0.24)] lg:my-5 lg:rounded-[2rem] lg:border lg:border-white/60">
+        <aside className="relative hidden w-[300px] shrink-0 flex-col overflow-hidden bg-[#123b61] p-6 text-white md:flex">
           <div className="pointer-events-none absolute -left-24 bottom-16 h-64 w-64 rounded-full bg-paris-blue/25 blur-3xl" />
           <div className="relative grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-paris-blue shadow-[0_12px_35px_rgba(27,82,171,0.3)]">
             <Sparkles size={22} aria-hidden="true" />
@@ -299,8 +299,8 @@ export default function ChatPage() {
           </div>
         </aside>
 
-        <section className="flex min-h-0 min-w-0 flex-1 flex-col bg-white">
-          <div className="flex items-center justify-between gap-3 border-b border-paris-navy/8 bg-white/90 px-4 py-3.5 backdrop-blur sm:px-5">
+        <section className="flex min-h-0 min-w-0 flex-1 flex-col bg-[#f7fafc]">
+          <div className="flex items-center justify-between gap-3 border-b border-paris-navy/8 bg-[#edf5fa]/95 px-4 py-3.5 backdrop-blur sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
               <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-paris-navy text-white md:hidden">
                 <Bot size={17} aria-hidden="true" />
@@ -354,7 +354,7 @@ export default function ChatPage() {
             <div ref={endRef} />
           </div>
 
-          <div className="border-t border-paris-navy/8 bg-white/95 p-3 backdrop-blur sm:p-4">
+          <div className="border-t border-paris-navy/8 bg-[#edf5fa]/95 p-3 backdrop-blur sm:p-4">
             <div className="thin-scrollbar mb-3 flex gap-2 overflow-x-auto">
               {quickPrompts.map((prompt) => (
                 <button

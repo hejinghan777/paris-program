@@ -75,7 +75,7 @@ export default function GoogleRestaurantMap({
         },
         icon: {
           path: maps.SymbolPath.CIRCLE,
-          fillColor: selected?.id === restaurant.id ? '#e6404f' : '#0c1d39',
+          fillColor: selected?.id === restaurant.id ? '#e6404f' : '#123b61',
           fillOpacity: 1,
           strokeColor: '#ffffff',
           strokeWeight: 2,
@@ -96,7 +96,7 @@ export default function GoogleRestaurantMap({
       routeRef.current = new maps.Polyline({
         map: mapRef.current,
         path: route.coordinates.map(([lat, lng]) => ({ lat, lng })),
-        strokeColor: '#1b52ab',
+        strokeColor: '#2367a6',
         strokeOpacity: 0.9,
         strokeWeight: 6,
       })

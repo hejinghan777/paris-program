@@ -19,7 +19,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-[1000] shrink-0 border-b border-white/10 bg-[#081a33]/95 text-white shadow-[0_10px_40px_rgba(4,15,31,0.18)] backdrop-blur-xl">
+    <header className="sticky top-0 z-[1000] shrink-0 border-b border-white/15 bg-[#123b61]/95 text-white shadow-[0_10px_40px_rgba(13,45,75,0.2)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:px-6">
         <NavLink to="/" className="group flex min-w-0 items-center gap-3 rounded-xl focus:outline-none">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[0.9rem] border border-white/20 bg-white text-sm font-black text-paris-blue shadow-[0_8px_24px_rgba(0,0,0,0.16)] transition group-hover:-translate-y-0.5">

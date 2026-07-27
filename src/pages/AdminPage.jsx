@@ -211,8 +211,8 @@ function LoginPanel({ onAuthenticated }) {
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-1 items-center px-4 py-12">
-      <div className="w-full rounded-[2rem] border border-paris-navy/8 bg-white p-6 shadow-card sm:p-8">
-        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-paris-navy text-white">
+      <div className="w-full rounded-[2rem] border border-white/60 bg-[#f7fafc]/95 p-6 shadow-[0_28px_90px_rgba(13,45,75,0.24)] backdrop-blur sm:p-8">
+        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#123b61] text-white">
           <LockKeyhole size={22} aria-hidden="true" />
         </div>
         <h1 className="mt-5 text-2xl font-black text-paris-navy">
@@ -421,9 +421,9 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 bg-[#eef1f5]">
-      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col lg:my-5 lg:overflow-hidden lg:rounded-[1.75rem] lg:border lg:border-paris-navy/8 lg:bg-white lg:shadow-card">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-paris-navy/8 bg-white px-4 py-4 sm:px-6">
+    <div className="flex min-h-0 flex-1">
+      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col bg-[#f3f8fb] lg:my-5 lg:overflow-hidden lg:rounded-[1.75rem] lg:border lg:border-white/60 lg:shadow-[0_28px_90px_rgba(13,45,75,0.24)]">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-paris-navy/8 bg-[#edf5fa] px-4 py-4 sm:px-6">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-paris-blue">
               {tr('内容管理系统', 'Content management', 'Gestion de contenu')}
@@ -497,7 +497,7 @@ export default function AdminPage() {
         )}
 
         <div className="grid min-h-0 flex-1 gap-0 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <aside className="border-b border-paris-navy/8 bg-paris-cream/45 p-4 lg:border-b-0 lg:border-r">
+          <aside className="border-b border-paris-navy/8 bg-[#e5eff6] p-4 lg:border-b-0 lg:border-r">
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
@@ -567,7 +567,7 @@ export default function AdminPage() {
             </div>
           </aside>
 
-          <main className="thin-scrollbar min-h-0 overflow-y-auto bg-white p-4 sm:p-6">
+          <main className="thin-scrollbar min-h-0 overflow-y-auto bg-[#f7fafc] p-4 sm:p-6">
             {activeKind === 'restaurant' && selectedRestaurant && (
               <div className="mx-auto max-w-4xl space-y-5">
                 <div>
