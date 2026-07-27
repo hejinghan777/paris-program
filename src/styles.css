@@ -18,11 +18,25 @@ body,
   margin: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgb(27 82 171 / 18%);
+  color: #0c1d39;
+}
+
 button,
 a,
 input,
 select {
   -webkit-tap-highlight-color: transparent;
+}
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid rgb(27 82 171 / 35%);
+  outline-offset: 3px;
 }
 
 .hero-grid {

@@ -9,6 +9,7 @@ import {
   CloudSun,
   Droplets,
   LoaderCircle,
+  Layers3,
   MapPinned,
   RefreshCw,
   Snowflake,
@@ -83,7 +84,7 @@ export default function HomePage() {
             )}
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Link
               to="/map"
               className="inline-flex items-center justify-center gap-2 rounded-2xl bg-paris-blue px-5 py-3.5 text-sm font-bold text-white shadow-[0_14px_32px_rgba(27,82,171,0.24)] transition hover:-translate-y-0.5 hover:bg-[#16468f] focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
@@ -98,6 +99,14 @@ export default function HomePage() {
             >
               <Bot size={18} aria-hidden="true" />
               {tr('咨询智能导游', 'Ask the smart guide', 'Consulter le guide')}
+            </Link>
+            <Link
+              to="/design"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-bold text-paris-blue transition hover:bg-white/70 focus:outline-none focus:ring-2 focus:ring-paris-blue focus:ring-offset-2"
+            >
+              <Layers3 size={18} aria-hidden="true" />
+              {tr('了解项目设计', 'How we designed it', 'Voir la conception')}
+              <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
 
@@ -241,11 +250,17 @@ export default function HomePage() {
       </section>
 
       <footer className="relative border-t border-paris-navy/8 bg-white/55 px-5 py-3 text-center text-[11px] text-paris-ink/45">
-        {tr(
-          '地图数据 © OpenStreetMap contributors · 路线结果请结合现场交通与道路状况判断',
-          'Map data © OpenStreetMap contributors · Check routes against current street conditions',
-          'Données cartographiques © contributeurs OpenStreetMap · Vérifiez les conditions sur place',
-        )}
+        <span>
+          {tr(
+            '地图数据 © OpenStreetMap contributors · 路线结果请结合现场交通与道路状况判断',
+            'Map data © OpenStreetMap contributors · Check routes against current street conditions',
+            'Données cartographiques © contributeurs OpenStreetMap · Vérifiez les conditions sur place',
+          )}
+        </span>
+        <span aria-hidden="true"> · </span>
+        <Link to="/design" className="font-bold text-paris-blue hover:underline">
+          {tr('查看项目架构与设计过程', 'View architecture and design process', 'Voir l’architecture et le processus')}
+        </Link>
       </footer>
     </div>
   )

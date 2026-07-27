@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Bot, Check, ChevronDown, Home, Languages, LockKeyhole, MapPinned } from 'lucide-react'
+import { Bot, Check, ChevronDown, Home, Languages, Layers3, LockKeyhole, MapPinned } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useLanguage } from '../i18n'
 
@@ -10,6 +10,7 @@ export default function Header() {
     { to: '/', label: tr('首页', 'Home', 'Accueil'), icon: Home, end: true },
     { to: '/chat', label: tr('智能导游', 'Smart guide', 'Guide intelligent'), icon: Bot },
     { to: '/map', label: tr('地图导航', 'Map', 'Carte'), icon: MapPinned },
+    { to: '/design', label: tr('项目设计', 'Project design', 'Conception'), icon: Layers3 },
     { to: '/admin', label: tr('管理', 'Admin', 'Admin'), icon: LockKeyhole },
   ]
 
@@ -19,7 +20,7 @@ export default function Header() {
   }
 
   return (
-    <header className="z-[1000] shrink-0 border-b border-white/10 bg-paris-navy text-white shadow-[0_8px_30px_rgba(12,29,57,0.16)]">
+    <header className="sticky top-0 z-[1000] shrink-0 border-b border-white/10 bg-paris-navy text-white shadow-[0_8px_30px_rgba(12,29,57,0.16)]">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-3 sm:px-6">
         <NavLink to="/" className="flex min-w-0 items-center gap-2.5">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-sm font-black text-paris-blue shadow-sm">
